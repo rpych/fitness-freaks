@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+</head>
+<body>
+    <form action="#" th:action="@{/saveUser}" th:object="${user}" method="post">
+    <table border="1">
+        <tr>
+            <td><label th:text="ID" /></td>
+            <td><input type="number" th:field="*{id}" /></td>
+        </tr>
+        <tr>
+            <td><label th:text="NAME" /></td>
+            <td><input type="text" th:field="*{name}" /></td>
+        </tr>
+        <tr>
+            <td><label th:text="AGE" /></td>
+            <td><input type="text" th:field="*{age}" /></td>
+        </tr>
+    </table>
+    <button type="submit" class="btn btn-success">Sign In</button>
+ <!--  <td><input type="submit" value="Submit" /></td>   -->
+</form>
+</body>
+</html>
