@@ -1,0 +1,24 @@
+
+body
+{
+    background-color: aqua;
+}
+
+p
+{
+    color: red;
+    border: 1px solid palevioletred;
+    padding: 40px;
+    margin: 60px;
+}
+
+.home-banner
+{
+    background-image: url("../home-banner.jpg");
+    background-color: greenyellow;
+    height: 500px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 10px;
+}

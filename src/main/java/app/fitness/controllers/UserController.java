@@ -21,11 +21,11 @@ public class UserController {
     public UserController(){
     }
 
-    @GetMapping("/signIn")
-    public String signIn(Model model) {
+    @GetMapping("/")
+    public String home(Model model) {
         User user = new User();
         model.addAttribute("user", user);
-        return "signIn";
+        return "home";
     }
 
     @GetMapping("/user/{id}")

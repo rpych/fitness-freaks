@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/homePage.css}" type="text/css"/>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="home-banner col-md-12"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <form action="#" th:action="@{/saveUser}" th:object="${user}" method="post">
+               <div class="form-group">
+                   <label for="name">User Name</label>
+                   <input type="text" class="form-control" id="name" placeholder="Wpisz imie" th:field="*{name}" >
+               </div>
+                <div class="form-group">
+                    <label for="age">User Age</label>
+                    <input type="text" class="form-control" id="age" placeholder="Wpisz wiek" th:field="*{age}">
+                </div>
+                <button type="submit" class="btn btn-primary">Zatwierdź</button>
+            </form>
+        </div>
+        <div class="col-sm-6">
+           <p>Fitness Freaks to aplikacja, która pozwoli Ci zaplanować
+           samemu swój trening na siłowni. Możesz się też zdać na
+           pomoc systemu, który po podaniu przez Ciebie swoich preferencji
+           zaplanuje trening specjalnie dopasowany do Twojej osoby.
+           Nie czekaj i zacznij trening razem z nami!
+            </p>
+        </div>
+        <div class="col-sm-2">
+            <ul>
+                <li>Zaloguj się</li>
+                <li>Zarejestruj się</li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>
