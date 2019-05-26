@@ -9,16 +9,23 @@ p
     color: red;
     border: 1px solid palevioletred;
     padding: 40px;
-    margin: 60px;
+    margin: 30px;
+}
+
+h4
+{
+    color: crimson;
+    border: 1px solid palevioletred;
+    padding: 5px;
+    margin: 30px;
 }
 
 .home-banner
 {
     background-image: url("../home-banner.jpg");
-    background-color: greenyellow;
+    background-color: aquamarine;
     height: 500px;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    margin: 10px;
 }
