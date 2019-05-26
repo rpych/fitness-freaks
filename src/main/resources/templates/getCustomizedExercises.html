@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Fitness-Freaks Customized daily training</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/homePage.css}" type="text/css"/>
+</head>
+<body>
+<div class="row">
+        <div class="col-4">
+            <div class="list-group" id="myList" role="tablist">
+                <tr th:each="exerciseList: ${exercisesMap}">
+                    <a class="list-group-item list-group-item-action active" data-toggle="list" th:href="'#'+${exerciseList.key}" th:if="${exerciseList.key} == 0" role="tab"><td th:text="'Day ' + ${exerciseList.key+1}" /></a>
+                    <a class="list-group-item list-group-item-action" data-toggle="list" th:href="'#'+${exerciseList.key}" th:unless="${exerciseList.key} == 0" role="tab"><td th:text="'Day ' + ${exerciseList.key+1}" /> </a>
+                </tr>
+            </div>
+        </div>
+        <div class="col-8">
+            <div class="tab-content">
+                <th:block th:each="exerciseList: ${exercisesMap}">
+                    <div class="tab-pane active" th:id="${exerciseList.key}" th:if="${exerciseList.key} == 0" role="tabpanel">
+                        <tr th:each="exercise: ${exerciseList.value}">
+                            <h4  th:text="'Ćwiczenie: ' + ${exercise.name} + ' Ilość serii: ' + ${exercise.rounds} +
+                                ' Powtórzenia w serii: '+ ${exercise.repetitionsInOneRound}" />
+                        </tr>
+                    </div>
+                    <div class="tab-pane" th:id="${exerciseList.key}" th:unless="${exerciseList.key} == 0"  role="tabpanel">
+                        <tr th:each="exercise: ${exerciseList.value}">
+                            <h4  th:text="'Ćwiczenie: ' + ${exercise.name} + ' Ilość serii: ' + ${exercise.rounds} +
+                                ' Powtórzenia w serii: '+ ${exercise.repetitionsInOneRound}" />
+                        </tr>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+</div>
+ </body>
+ </html>
