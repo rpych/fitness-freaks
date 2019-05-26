@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Fitness-Freaks user panel</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/homePage.css}" type="text/css"/>
+    <script>
+        jQuery(function(){
+        jQuery('.datepicker').datepicker({
+            format: 'mm-dd-yyyy'
+        });
+        });
+    </script>
+</head>
+<body>
+<div class="container-fluid">
+        <ul class="nav nav-tabs" id="myTab" data-toggle="tab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="advance-tab" data-toggle="tab" href="#advance" role="tab" aria-controls="advance" aria-selected="true">Postępy treningu</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="plan-training-tab" data-toggle="tab" href="#plan-training" role="tab" aria-controls="plan-training" aria-selected="false">Zaplanuj trening</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="freak-instructor-tab" data-toggle="tab" href="#freak-instructor" role="tab" aria-controls="freak-instructor" aria-selected="false">Instruktor FREAK</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="help-tab" data-toggle="tab" href="#help" role="tab" aria-controls="help" aria-selected="false">Pomoc</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane active" id="advance" role="tabpanel" aria-labelledby="advance-tab">
+                Twoje wyniki
+            </div>
+            <div class="tab-pane" id="plan-training" role="tabpanel" aria-labelledby="plan-training-tab">
+                <form action="#" th:action="@{/arrangeTraining}" method="post">
+                    <div  class="form-row">
+                        <div class="form-group col-md-5">
+                            <label for="inputDate">Wybierz datę</label>
+                            <input type="text" class="form-control datepicker" id="inputDate" placeholder="Wybierz datę"/>
+                        </div>
+                    <div class="form-group col-md-3">
+                        <label for="inputExercise">Ćwiczenia</label>
+                        <select th:field="${exer1.name}" id="inputExercise" class="form-control">
+                            <option selected value="0" th:value="${exer1.name}">Pompki </option>
+                            <option value="1" th:value="${exer2.name}">Brzuszki</option>
+                            <option value="2" th:value="${exer3.name}">Deska</option>
+                            <option value="3" th:value="${exer4.name}">Podciąganie na drążku</option>
+                            <option value="4" th:value="${exer5.name}">Martwy ciąg</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="inputRounds">Ilość serii ćwiczeń</label>
+                        <input type="text" class="form-control" id="inputRounds" th:field="${exer1.rounds}">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="inputRepetitions">Ilość powtórzeń w serii</label>
+                        <input type="text" class="form-control" id="inputRepetitions" placeholder="10, 30, 50 ..." th:field="${exer1.repetitionsInOneRound}">
+                    </div>
+                </div>
+                <!-- second row of exercises -->
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                                <label for="inputExercise1">Ćwiczenia</label>
+                                <select th:field="${exer2.name}" id="inputExercise1" class="form-control">
+                                    <option selected value="0" th:value="${exer1.name}">Pompki </option>
+                                    <option value="1" th:value="${exer2.name}">Brzuszki</option>
+                                    <option value="2" th:value="${exer3.name}">Deska</option>
+                                    <option value="3" th:value="${exer4.name}">Podciąganie na drążku</option>
+                                    <option value="4" th:value="${exer5.name}">Martwy ciąg</option>
+                                </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputRounds1">Ilość serii ćwiczeń</label>
+                            <input type="text" class="form-control" id="inputRounds1" th:field="${exer2.rounds}">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="inputRepetitions1">Ilość powtórzeń w serii</label>
+                            <input type="text" class="form-control" id="inputRepetitions1"  placeholder="10, 30, 50 ..." th:field="${exer2.repetitionsInOneRound}">
+                        </div>
+                    </div>
+                    <!--<a href="#" th:href="@{/getCustomizedExercises}" class="btn btn-info" role="button">Zatwierdź</a> -->
+                    <button type="submit" class="btn btn-success">Zatwierdź</button>
+                </form>
+            </div>
+            <div class="tab-pane" id="freak-instructor" role="tabpanel" aria-labelledby="freak-instructor-tab">
+                <h2>Niech Instruktor FREAK zaplanuje trening za Ciebie... :) </h2>
+                <form action="#" th:action="@{/getCustomizedExercises}" method="post">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputAge">Age</label>
+                            <input type="text" class="form-control" id="inputAge" placeholder="Wiek" th:field="${user.age}">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputRelShape">Ocena Twojej kondycji w %</label>
+                            <input type="text" class="form-control" id="inputRelShape" placeholder="Kondycja w %" th:field="${user.bodyParameters.relativeShape}">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputWeight">Waga</label>
+                            <input type="text" class="form-control" id="inputWeight" placeholder="Waga w kg" th:field="${user.bodyParameters.weight}">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputHeight">Wzrost</label>
+                            <input type="text" class="form-control" id="inputHeight" placeholder="Wzrost w cm" th:field="${user.bodyParameters.height}">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success">Zatwierdź</button>
+                </form>
+            </div>
+            <div class="tab-pane" id="help" role="tabpanel" aria-labelledby="help-tab">HELP</div>
+        </div>
+    <div class="row" style="margin: 40px">
+        <h2 th:text="'Witaj ' + ${user.getName()} + '!'" />
+    </div>
+</div>
+</body>
+</html>
