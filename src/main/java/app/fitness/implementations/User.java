@@ -1,9 +1,7 @@
 package app.fitness.implementations;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -15,7 +13,9 @@ public class User {
     private String name;
     //private Date dateOfBirth;
     private int age;
-
+    @OneToOne(cascade = CascadeType.PERSIST)
+    private BodyParameters bodyParameters = new BodyParameters();
+	
     public User() {}
 
     public User(Long id, String name, int age /*Date dateOfBirth*/) {
@@ -53,5 +53,13 @@ public class User {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public BodyParameters getBodyParameters() {
+        return bodyParameters;
+    }
+
+    public void setBodyParameters(BodyParameters bodyParameters) {
+        this.bodyParameters = bodyParameters;
     }
 }
