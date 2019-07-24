@@ -2,6 +2,8 @@ language: java
 jobs:
   include:
     - stage: first
-      script: ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-    - stage: second
       script: ./mvnw test -B
+    - stage: second
+      script: ./mvnw test
+    - stage: third
+      script: ./mvnw -Dtest=FitnessFreaksApplicationTests test
