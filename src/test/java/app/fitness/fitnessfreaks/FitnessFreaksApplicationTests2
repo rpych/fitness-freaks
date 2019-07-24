@@ -1,0 +1,12 @@
+package app.fitness.fitnessfreaks;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+public class FitnessFreaksApplicationTests2 {
+
+	@Test
+	public void contextLoads() {
+	}
+
+}
