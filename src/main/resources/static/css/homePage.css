@@ -29,3 +29,16 @@ h4
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+.allRepetitions
+{
+    padding: 5px;
+    margin: 30px;
+}
+
+.page-header
+{
+    background-color: lightgrey;
+    padding: 5px;
+    margin: 30px;
+}
