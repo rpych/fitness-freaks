@@ -8,3 +8,4 @@ import org.springframework.stereotype.Repository;
 public interface BodyParametersRepository extends CrudRepository<BodyParameters, Long> {
 
 }
+

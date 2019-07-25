@@ -17,7 +17,7 @@ public class ExercisesSolver {
     public final static Integer GOOD_SHAPE = 75;
 
     public ExercisesSolver() {
-        this.exerciseNames = Arrays.asList("Pompki", "Brzuszki", "Deska", "Podciąganie na drążku", "Martwy ciąg");//new ArrayList<>();
+        this.exerciseNames = Arrays.asList("Pompki", "Brzuszki", "Deska", "Podciąganie na drążku", "Martwy ciąg");
         this.roundsUpperBoundPerExercise = new HashMap<>();
         this.repetitionsUpperBoundPerExercise = new HashMap<>();
         prepareExerciseSolver();

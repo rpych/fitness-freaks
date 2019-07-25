@@ -1,10 +1,187 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Getting Started: Serving Web Content</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Fitness-Freaks user panel</title>
+    <!-- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />-->
+    <!-- <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/homePage.css}" type="text/css"/>
 </head>
 <body>
-    <p th:text="'Hello, ' + ${id} + '!'" />
+<div class="row">
+    <div class="page-header" id="pageHead"> <!-- style="background-color: lightgrey;" -->
+        <a href="#" th:href="@{/oauth2/redirect/log}" id="homeLink" role="link">HOME</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-4">
+        <div class="list-group" id="myList" role="tablist">
+            <tr th:each="exercise,i: ${exercisesList}">
+                <a class="list-group-item list-group-item-action active" data-toggle="list" th:href="'#'+${i.index}" th:if="${i.index} == 0" role="tab"><td th:text="'Day ' + ${exercise.date} + ', '+ ${exercise.name}" /></a>
+                <a class="list-group-item list-group-item-action" data-toggle="list" th:href="'#'+${i.index}" th:unless="${i.index} == 0" role="tab"><td th:text="'Day ' + ${exercise.date} + ', '+ ${exercise.name}" /> </a>
+            </tr>
+        </div>
+    </div>
+    <div class="col-8">
+        <div class="tab-content">
+            <div id="feedback"></div>
+            <th:block th:each="exercise,i: ${exercisesList}">
+                <div class="tab-pane active" th:if="${i.index} == 0" th:id="${i.index}" role="tabpanel">
+                    <form th:id="${exercise.name+i.index}" action="#" th:action="@{/oauth2/redirect/logDailyExercise}" method="post">
+                        <div class="form-row">
+                            <div class="form-group col-md-2" style="display:none;">
+                                <label for="date">Data</label>
+                                <input type="hidden" class="form-control" name="date" id="date" th:attr="value=${exercise.date}" >
+                            </div>
+                            <dl class="dl-horizontal">
+                                <dt>Nazwa</dt>
+                                <dd th:text="${exercise.name}"></dd>
+                                <dt>Data</dt>
+                                <dd th:text="${exercise.date}"></dd>
+                            </dl>
+                            <div class="form-group col-md-2" style="display:none;">
+                                <label for="name">Nazwa</label>
+                                <input type="hidden" class="form-control" name="name" id="name" th:attr="value=${exercise.name}">
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="allRepetitions">Suma powtórzeń</label>
+                                <input type="number" class="form-control" name="allRepetitions" id="allRepetitions" th:placeholder="'/'+${exercise.rounds * exercise.repetitionsInOneRound}" th:field="${loggedExercise.allRepetitions}">
+                            </div>
+                        </div>
+                        <button id="firstButton" type="submit" name="logButton"  class="btn btn-success" >Zatwierdź</button>  <!--onclick="fire_ajax_submit('logButton', 0)" -->
+                    </form>
+                </div>
+                <div class="tab-pane" th:unless="${i.index} == 0" th:id="${i.index}" role="tabpanel">
+                    <form th:id="${exercise.name+i.index}" action="#" th:action="@{/oauth2/redirect/logDailyExercise}" method="post">
+                        <div class="form-row">
+                            <div class="form-group col-md-2" style="display:none;">
+                                <label for="date1">Data</label>
+                                <input type="hidden" class="form-control" name="date" id="date1" th:attr="value=${exercise.date}">
+                            </div>
+                            <div class="form-group col-md-2" style="display:none;">
+                                <label for="name1">Nazwa</label>
+                                <input type="hidden" class="form-control" name="name" id="name1" th:attr="value=${exercise.name}">
+                            </div>
+                            <dl class="dl-horizontal">
+                                <dt>Nazwa</dt>
+                                <dd th:text="${exercise.name}"></dd>
+                                <dt>Data</dt>
+                                <dd th:text="${exercise.date}"></dd>
+                            </dl>
+                            <div class="form-group col-md-2">
+                                <label for="allRepetitions1">Suma powtórzeń</label>
+                                <input type="number" class="form-control" name="allRepetitions" id="allRepetitions1" th:placeholder="'/'+${exercise.rounds * exercise.repetitionsInOneRound}" th:field="${loggedExercise.allRepetitions}">
+                            </div>
+                        </div>
+                        <button id="secButton" type="submit" name="logButton" class="btn btn-success" >Zatwierdź</button>
+                    </form>
+                </div>
+            </th:block>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <a href="#" th:href="@{/oauth2/redirect/submitDailyExercises}" id="submitLog" class="btn btn-primary" role="button">Zatwierdź logowanie ćwiczeń</a>
+    </div>
+</div>
+<div class="row">
+    <div id="feedbackDiv">
+
+    </div>
+</div>
+
+
+<!-- <script>
+    $(document).ready(function () {
+
+        $("#firstButton").submit(function (event) {
+            //stop submit the form, we will post it manually.
+            event.preventDefault();
+            alert("This is my alert "+ elementName + " idx0 = "+ idx);
+
+            fire_ajax_submit('logButton', 0);
+
+        });
+
+        $("#secButton").submit(function (event) {
+
+            //stop submit the form, we will post it manually.
+            event.preventDefault();
+            alert("This is my alert "+ elementName + " idx = "+ idx);
+            fire_ajax_submit('logButton', 1);
+
+        });
+
+    });
+
+    function fire_ajax_submit(elementName, idx) {
+        //alert("This is my alert "+ elementName + " idx = "+ idx);
+        //event.preventDefault();
+        var search = {};
+        var logButtons = document.getElementsByName(elementName);
+        var logDates = document.getElementsByName("date");
+        var logNames = document.getElementsByName("name");
+        search["date"] = logDates[0].value();//$("#date")[0].val();
+        search["name"] = logNames[0].value(); //$("#name")[0].val();
+        var first;
+        var dailyExerId;
+        if(idx == 0){
+            dailyExerId = document.getElementById("allRepetitions");
+            search["allRepetitions"] = dailyExerId[0].value();//$("#allRepetitions")[0].val();//
+            //first = dailyExerId.val();
+        }
+        else{
+            dailyExerId = document.getElementById("allRepetitions1");
+            search["allRepetitions"] = dailyExerId[0].value();//$("#allRepetitions").val();//dailyExerId[0].val();
+            //first = dailyExerId.val();
+        }
+
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        $(document).ajaxSend(function(event, xhr, options) {
+            xhr.setRequestHeader(header, token);
+        });
+        $("#btn-search").prop("disabled", true);
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/logDailyExercise",
+            data: JSON.stringify(search),
+            //dataType: 'json',
+            cache: false
+            /*timeout: 600000,*/
+            /*success: function (data) {
+
+                var json = "<h4>Ajax Response</h4><pre>"
+                    + JSON.stringify(data, null, 4) + "</pre>";
+                $('#feedback').html(json);
+
+                console.log("SUCCESS : ", data);
+                $("#btn-search").prop("disabled", false);
+
+            },
+            error: function (e) {
+
+                var json = "<h4>Ajax Response</h4><pre>"
+                    + e.responseText + search["name"]+  search["date"]+ search["allRepetitions"]+"</pre>";
+                $('#feedback').html(json);
+
+                console.log("ERROR : ", e);
+                $("#btn-search").prop("disabled", false);
+
+            }*/
+        });
+
+    }
+
+    /*JSON.stringify({ date: '12-07-2019',
+        name: 'Pompeczki',
+        allRepetitions: first}),*/
+</script> -->
 </body>
 </html>

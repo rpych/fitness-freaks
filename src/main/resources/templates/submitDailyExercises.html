@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Fitness-Freaks user panel</title>
+    <!-- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />-->
+   <!-- <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/homePage.css}" type="text/css"/>
+</head>
+<body>
+<div class="row">
+    <div class="page-header" id="pageHead"> <!-- style="background-color: lightgrey;" -->
+        <a href="#" th:href="@{/oauth2/redirect/log}" id="homeLink" role="link">HOME</a>
+    </div>
+</div>
+    <h3>Twoje logowanie ćwiczeń zostało zatwierdzone</h3>
+</body>
+</html>
