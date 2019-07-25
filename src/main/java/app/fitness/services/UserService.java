@@ -1,8 +1,6 @@
 package app.fitness.services;
 
-import app.fitness.implementations.Exercise;
-import app.fitness.implementations.ExercisesSolver;
-import app.fitness.implementations.User;
+import app.fitness.implementations.*;
 import app.fitness.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,7 +11,8 @@ import java.util.*;
 @Qualifier("userService")
 @Service
 public class UserService {
-    //private List<User> users = new LinkedList<>();
+    public List<DailyExercise> dailyExercises = new LinkedList<>();
+    public List<LoggedExercise> loggedDailyExercises = new LinkedList<>();
 
     private UserRepository userRepository;
     private ExercisesSolver exercisesSolver;

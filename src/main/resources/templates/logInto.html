@@ -3,20 +3,20 @@
 <head>
     <title>Fitness-Freaks user panel</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!--<meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
     <link rel="stylesheet" th:href="@{/css/homePage.css}" type="text/css"/>
-    <script>
-        jQuery(function(){
-        jQuery('.datepicker').datepicker({
-            format: 'mm-dd-yyyy'
-        });
-        });
-    </script>
 </head>
 <body>
+<div class="row">
+    <div class="page-header" id="pageHead"> <!-- style="background-color: lightgrey;" -->
+        <a href="#" th:href="@{/oauth2/redirect/log}" id="homeLink" role="link">HOME</a>
+    </div>
+</div>
 <div class="container-fluid">
         <ul class="nav nav-tabs" id="myTab" data-toggle="tab" role="tablist">
             <li class="nav-item">
@@ -36,15 +36,17 @@
         <div class="tab-content">
             <div class="tab-pane active" id="advance" role="tabpanel" aria-labelledby="advance-tab">
                 Twoje wyniki
+                <a href="#" th:href="@{/oauth2/redirect/log}" id="homeLink" role="link">HOME</a>
             </div>
             <div class="tab-pane" id="plan-training" role="tabpanel" aria-labelledby="plan-training-tab">
-                <form action="#" th:action="@{/arrangeTraining}" method="post">
+                <div id="ajaxPostInfoDiv"></div>
+                <form id="arrangeForm" action="#" th:action="@{/oauth2/redirect/arrangeTrainingPart}" method="post">
                     <div  class="form-row">
                         <div class="form-group col-md-5">
-                            <label for="inputDate">Wybierz datę</label>
-                            <input type="text" class="form-control datepicker" id="inputDate" placeholder="Wybierz datę"/>
+                            <label for="date">Wybierz datę</label>
+                            <input type="text" class="form-control datepicker" id="date" name="date" th:field="${dailyExer.date}" placeholder="Wybierz datę"/>
                         </div>
-                    <div class="form-group col-md-3">
+                    <!--<div class="form-group col-md-3">
                         <label for="inputExercise">Ćwiczenia</label>
                         <select th:field="${exer1.name}" id="inputExercise" class="form-control">
                             <option selected value="0" th:value="${exer1.name}">Pompki </option>
@@ -53,48 +55,33 @@
                             <option value="3" th:value="${exer4.name}">Podciąganie na drążku</option>
                             <option value="4" th:value="${exer5.name}">Martwy ciąg</option>
                         </select>
+                    </div> -->
+                    <div class="form-group col-md-3">
+                        <label for="name">Ćwiczenie</label>
+                        <input type="text" class="form-control" id="name" name="name" th:field="${dailyExer.name}" placeholder="Wpisz ćwiczenie">
                     </div>
                     <div class="form-group col-md-2">
-                        <label for="inputRounds">Ilość serii ćwiczeń</label>
-                        <input type="text" class="form-control" id="inputRounds" th:field="${exer1.rounds}">
+                        <label for="rounds">Ilość serii ćwiczeń</label>
+                        <input type="number" class="form-control" id="rounds" name="rounds" th:field="${dailyExer.rounds}">
                     </div>
                     <div class="form-group col-md-2">
-                        <label for="inputRepetitions">Ilość powtórzeń w serii</label>
-                        <input type="text" class="form-control" id="inputRepetitions" placeholder="10, 30, 50 ..." th:field="${exer1.repetitionsInOneRound}">
+                        <label for="repetitionsInOneRound">Ilość powtórzeń w serii</label>
+                        <input type="number" class="form-control" id="repetitionsInOneRound" name="repetitionsInOneRound" placeholder="10, 30, 50 ..." th:field="${dailyExer.repetitionsInOneRound}">
                     </div>
                 </div>
-                <!-- second row of exercises -->
-                    <div class="form-row">
-                        <div class="form-group col-md-4">
-                                <label for="inputExercise1">Ćwiczenia</label>
-                                <select th:field="${exer2.name}" id="inputExercise1" class="form-control">
-                                    <option selected value="0" th:value="${exer1.name}">Pompki </option>
-                                    <option value="1" th:value="${exer2.name}">Brzuszki</option>
-                                    <option value="2" th:value="${exer3.name}">Deska</option>
-                                    <option value="3" th:value="${exer4.name}">Podciąganie na drążku</option>
-                                    <option value="4" th:value="${exer5.name}">Martwy ciąg</option>
-                                </select>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="inputRounds1">Ilość serii ćwiczeń</label>
-                            <input type="text" class="form-control" id="inputRounds1" th:field="${exer2.rounds}">
-                        </div>
-                        <div class="form-group col-md-2">
-                            <label for="inputRepetitions1">Ilość powtórzeń w serii</label>
-                            <input type="text" class="form-control" id="inputRepetitions1"  placeholder="10, 30, 50 ..." th:field="${exer2.repetitionsInOneRound}">
-                        </div>
-                    </div>
-                    <!--<a href="#" th:href="@{/getCustomizedExercises}" class="btn btn-info" role="button">Zatwierdź</a> -->
                     <button type="submit" class="btn btn-success">Zatwierdź</button>
                 </form>
+                <div class="form-row" id="submitEntirePlan" style="margin: 40px">
+                    <a href="#" th:href="@{/oauth2/redirect/arrangeTraining}" class="btn btn-primary" role="button">Zatwierdź cały plan</a>
+                </div>
             </div>
             <div class="tab-pane" id="freak-instructor" role="tabpanel" aria-labelledby="freak-instructor-tab">
                 <h2>Niech Instruktor FREAK zaplanuje trening za Ciebie... :) </h2>
-                <form action="#" th:action="@{/getCustomizedExercises}" method="post">
+                <form id="instructorFreak" action="#" th:action="@{/oauth2/redirect/getCustomizedExercises}" method="post">
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputAge">Age</label>
-                            <input type="text" class="form-control" id="inputAge" placeholder="Wiek" th:field="${user.age}">
+                            <input type="text" class="form-control" id="inputAge" placeholder="Wiek" th:field="${user.email}">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputRelShape">Ocena Twojej kondycji w %</label>
@@ -115,11 +102,138 @@
                     <button type="submit" class="btn btn-success">Zatwierdź</button>
                 </form>
             </div>
-            <div class="tab-pane" id="help" role="tabpanel" aria-labelledby="help-tab">HELP</div>
+            <div class="tab-pane" id="help" role="tabpanel" aria-labelledby="help-tab">
+                <p>Korzystając z serwisu fitness-freaks możesz:<br>
+                    * zaplanować swój trening wybierajac zakładkę "Zaplanuj trening",<br>
+                      gdzie dla danej daty wpisujesz dowolne ćwiczenie i określasz dla niego ilość serii<br>
+                      i powtórzeń w serii<br><br>
+
+                    * zlecić zaplanowanie treningu systemowi wybierając zakładkę "Instruktor FREAK"<br><br>
+
+                    * zobaczyć postępy własnego treningu w zakładce "Postępy treningu"</p>
+            </div>
         </div>
     <div class="row" style="margin: 40px">
-        <h2 th:text="'Witaj ' + ${user.getName()} + '!'" />
+        <h2 th:text="'Witaj ' + ${user.getName()} + ', ' + ${user.getEmail()}" />
     </div>
 </div>
+<div id="feedback"></div>
+<script>
+   /* $(document).ready(function () {
+       $("instructorFreak").submit(function (event) {
+           event.preventDefault();
+          /* var http = new HttpClient();
+           http.Request.ContentType = "application/json";
+           http.Request.Accept = "application/json";
+           http.Request.Authorization = "Bearer d352b45d-0e5b-4c2d-a10b-c7be8c7cd3ff";
+
+           var response = http.POST();*/
+           /*var http = new XMLHttpRequest();
+           http.contentType = "application/json";
+           http.accept = "application/json";
+
+           const headers = new Headers({
+               'Content-Type': 'application/json',
+           });
+
+           var url = window.location.href;
+           access_token = url.match(/\#(?:token)\=([\S\s]*?)\&/)[1];
+           //if(localStorage.getItem(ACCESS_TOKEN)) {
+           console.log(access_token);
+           headers.append('Authorization', 'Bearer ' + access_token);
+           //}
+           options = {
+               url: "http://localhost:8080" + "getCustomizedExercises",
+               method: 'POST'
+           };
+           const defaults = {headers: headers};
+           options = Object.assign({}, defaults, options);
+
+           return fetch(options.url, options)
+               .then(response =>
+                   response.json().then(json => {
+                       if(!response.ok) {
+                           return Promise.reject(json);
+                       }
+                       return json;
+                   })
+               );
+       });
+    });*/
+
+    $(document).ready(function () {
+
+        $("#arrangeForm").submit(function (event) {
+
+            event.preventDefault();
+
+            fire_ajax_submit();
+
+           var ajaxPostInfoDiv = document.getElementById("ajaxPostInfoDiv");
+           ajaxPostInfoDiv.innerHTML = "<strong>Dodałeś nowy plan ćwiczenia</strong>";
+           $("#ajaxPostInfoDiv").fadeIn();
+        });
+
+    });
+
+    function fire_ajax_submit() {
+
+        var search = {};
+        search["name"] = $("#name").val();
+        search["rounds"] = $("#rounds").val();
+        search["repetitionsInOneRound"] = $("#repetitionsInOneRound").val();
+        //var token = $("meta[name='_csrf']").attr("content");
+        //var header = $("meta[name='_csrf_header']").attr("content");
+        search["date"] = $("#date").val();
+
+       /* var url = window.location.href;
+        access_token = url.match(/\#(?:token)\=([\S\s]*?)\&/)[1];
+        $(document).ajaxSend(function(event, xhr, options) {
+            xhr.setRequestHeader(header, access_token);
+        });*/
+        $("#btn-search").prop("disabled", true);
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/oauth2/redirect/arrangeTrainingPart",
+            data: JSON.stringify(search),
+            dataType: 'json',
+            cache: false,
+            success: function () {
+
+                var json = "<h4>Ajax Response</h4><pre>"; //+ JSON.stringify(data, null, 4) + "</pre>"
+                $('#feedback').html('<h4>Ajax Response</h4><pre>');
+
+                console.log("SUCCESS : ", data);
+               // $("#btn-search").prop("disabled", false);
+
+            }
+            ,error: function () {
+
+                var json = "<h4>Ajax Response</h4><pre>"
+                    + e.responseText + search["name"]+  search["rounds"]+ search["repetitionsInOneRound"]+"</pre>";
+                $('#feedback').html('<h4>Ajax Response Error</h4><pre>');
+
+                //$("#btn-search").prop("disabled", false);
+
+            }
+
+        });
+
+        /*$(document).ajaxSuccess(function (event, jqxhr, settings) {
+            $("#feedback").text(jqxhr.responseText);
+           // $("#message1").fadeIn(800);
+        });*/
+
+    }
+</script>
+<script>
+    jQuery(function(){
+        jQuery('.datepicker').datepicker({
+            format: 'mm-dd-yyyy'
+        });
+    });
+</script>
 </body>
 </html>
