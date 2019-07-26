@@ -14,7 +14,8 @@
 <body>
 <div class="row">
     <div class="page-header" id="pageHead"> <!-- style="background-color: lightgrey;" -->
-        <a href="#" th:href="@{/oauth2/redirect/log}" id="homeLink" role="link">HOME</a>
+        <a href="#" th:href="@{'/oauth2/logInto/'+${user.id}}" id="homeLink1" role="link">HOME</a> <!-- th:href="@{/oauth2/logInto/{userId}(userId=${user.getId()})}" -->
+
     </div>
 </div>
 <div class="container-fluid">
@@ -40,7 +41,7 @@
             </div>
             <div class="tab-pane" id="plan-training" role="tabpanel" aria-labelledby="plan-training-tab">
                 <div id="ajaxPostInfoDiv"></div>
-                <form id="arrangeForm" action="#" th:action="@{/oauth2/redirect/arrangeTrainingPart}" method="post">
+                <form id="arrangeForm" action="#" th:action="@{/oauth2/arrangeTrainingPart}" method="post">
                     <div  class="form-row">
                         <div class="form-group col-md-5">
                             <label for="date">Wybierz datę</label>
@@ -72,33 +73,37 @@
                     <button type="submit" class="btn btn-success">Zatwierdź</button>
                 </form>
                 <div class="form-row" id="submitEntirePlan" style="margin: 40px">
-                    <a href="#" th:href="@{/oauth2/redirect/arrangeTraining}" class="btn btn-primary" role="button">Zatwierdź cały plan</a>
+                    <a href="#" th:href="@{'/oauth2/arrangeTraining/'+${user.id}}" class="btn btn-primary" role="button" th:onsubmit="arrangeTraining()">Zatwierdź cały plan</a> <!-- onclick="arrangeTraining()" -->
                 </div>
             </div>
             <div class="tab-pane" id="freak-instructor" role="tabpanel" aria-labelledby="freak-instructor-tab">
                 <h2>Niech Instruktor FREAK zaplanuje trening za Ciebie... :) </h2>
                 <form id="instructorFreak" action="#" th:action="@{/oauth2/getCustomizedExercises}" method="post">
                     <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="inputAge">Age</label>
-                            <input type="number" class="form-control" id="inputAge" placeholder="Wiek">
+                        <div class="form-group col-md-4" style="display:none;">
+                            <label for="date">Id</label>
+                            <input type="hidden" class="form-control" name="userId" id="userId" th:attr="value=${user.id}" >
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-4">
+                            <label for="inputAge">Wiek</label>
+                            <input type="text" class="form-control" id="inputAge" placeholder="Wiek" th:field="${user.email}">
+                        </div>
+                        <div class="form-group col-md-4">
                             <label for="inputRelShape">Ocena Twojej kondycji w %</label>
-                            <input type="number" class="form-control" id="inputRelShape" placeholder="Kondycja w %" > <!-- th:field="${user.bodyParameters.relativeShape}" -->
+                            <input type="number" class="form-control" id="inputRelShape" placeholder="Kondycja w %" th:field="${user.bodyParameters.relativeShape}"> <!-- th:field="${user.bodyParameters.relativeShape}" -->
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputWeight">Waga</label>
-                            <input type="number" class="form-control" id="inputWeight" placeholder="Waga w kg">
+                            <input type="number" class="form-control" id="inputWeight" placeholder="Waga w kg" th:field="${user.bodyParameters.weight}">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputHeight">Wzrost</label>
-                            <input type="number" class="form-control" id="inputHeight" placeholder="Wzrost w cm">
+                            <input type="number" class="form-control" id="inputHeight" placeholder="Wzrost w cm" th:field="${user.bodyParameters.height}">
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-success" onclick="getCustomizedExercises()">Zatwierdź</button>
+                    <button type="submit" class="btn btn-success" >Zatwierdź</button> <!-- onclick="getCustomizedExercises()" -->
                 </form>
             </div>
             <div class="tab-pane" id="help" role="tabpanel" aria-labelledby="help-tab">
@@ -113,7 +118,7 @@
             </div>
         </div>
     <div class="row" style="margin: 40px">
-        <h2 th:text="'Witaj ' + ${user.getName()} + ', ' + ${user.getEmail()}" />
+        <h2 th:text="'Witaj ' + ${user.getId()} + ', ' + ${user.getEmail()}" />
     </div>
 </div>
 <div id="feedback"></div>
@@ -196,7 +201,7 @@
         $.ajax({
             type: "POST",
             contentType: "application/json",
-            url: "/oauth2/redirect/arrangeTrainingPart",
+            url: "/oauth2/arrangeTrainingPart",
             data: JSON.stringify(search),
             dataType: 'json',
             cache: false,
@@ -209,16 +214,6 @@
                // $("#btn-search").prop("disabled", false);
 
             }
-            ,error: function () {
-
-                var json = "<h4>Ajax Response</h4><pre>"
-                    + e.responseText + search["name"]+  search["rounds"]+ search["repetitionsInOneRound"]+"</pre>";
-                $('#feedback').html('<h4>Ajax Response Error</h4><pre>');
-
-                //$("#btn-search").prop("disabled", false);
-
-            }
-
         });
 
         /*$(document).ajaxSuccess(function (event, jqxhr, settings) {

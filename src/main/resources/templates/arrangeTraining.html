@@ -13,7 +13,7 @@
 <body>
 <div class="row">
     <div class="page-header" id="pageHead"> <!-- style="background-color: lightgrey;" -->
-        <a href="#" th:href="@{/oauth2/redirect/log}" id="homeLink" role="link">HOME</a>
+        <a href="#" th:href="@{'/oauth2/logInto/'+${user.id}}" id="homeLink" role="link">HOME</a>
     </div>
 </div>
 <div class="row">
@@ -30,7 +30,7 @@
             <div id="feedback"></div>
             <th:block th:each="exercise,i: ${exercisesList}">
                 <div class="tab-pane active" th:if="${i.index} == 0" th:id="${i.index}" role="tabpanel">
-                    <form th:id="${exercise.name+i.index}" action="#" th:action="@{/oauth2/redirect/logDailyExercise}" method="post">
+                    <form th:id="${exercise.name+i.index}" action="#" th:action="@{/oauth2/logDailyExercise}" method="post">
                         <div class="form-row">
                             <div class="form-group col-md-2" style="display:none;">
                                 <label for="date">Data</label>
@@ -55,7 +55,7 @@
                     </form>
                 </div>
                 <div class="tab-pane" th:unless="${i.index} == 0" th:id="${i.index}" role="tabpanel">
-                    <form th:id="${exercise.name+i.index}" action="#" th:action="@{/oauth2/redirect/logDailyExercise}" method="post">
+                    <form th:id="${exercise.name+i.index}" action="#" th:action="@{/oauth2/logDailyExercise}" method="post">
                         <div class="form-row">
                             <div class="form-group col-md-2" style="display:none;">
                                 <label for="date1">Data</label>

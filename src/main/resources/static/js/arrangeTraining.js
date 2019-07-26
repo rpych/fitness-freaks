@@ -24,34 +24,14 @@ const request = (options) => {
                 if(!response.ok) {
                     return Promise.reject(json);
                 }
-                console.log(json);
+                console.log('Odpowiedz ' + json);
                 return json;
             }).catch(error => {
-                    console.log(error);
-                })
+                console.log(error);
+            })
         );
 };
 
-function getCustomizedExercises(){
-    const age = document.getElementById("inputAge").value;
-    const inputRelShape = document.getElementById("inputRelShape").value;
-    const inputWeight = document.getElementById("inputWeight").value;
-    const inputHeight = document.getElementById("inputHeight").value;
-
-    const inputs = {
-        age: age,
-        weight: inputWeight,
-        height: inputHeight,
-        relativeShape: inputRelShape
-    };
-    const loginRequest = Object.assign({}, inputs);
-
-    return request({
-        url: API_BASE_URL + '/getCustomizedExercises',
-        method: 'POST',
-        body: JSON.stringify(loginRequest)
-    });
-}
 
 function arrangeTraining(){
     return request({

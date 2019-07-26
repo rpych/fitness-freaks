@@ -11,7 +11,7 @@ const error = getUrlParameter('error');
 
 if(token){
     localStorage.setItem(ACCESS_TOKEN, token);
-    window.location.href = '/oauth2/logInto';
+    window.location.href = '/oauth2/authForm';
 }else{
     console.log("Powrot do strony startowej");
     window.location.href = '/';

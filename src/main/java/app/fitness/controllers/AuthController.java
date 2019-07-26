@@ -1,14 +1,16 @@
 package app.fitness.controllers;
 
 import app.fitness.exceptions.BadRequestException;
-import app.fitness.implementations.AuthProvider;
-import app.fitness.implementations.User;
+import app.fitness.implementations.*;
 import app.fitness.payload.ApiResponse;
 import app.fitness.payload.AuthResponse;
 import app.fitness.payload.LoginRequest;
 import app.fitness.payload.SignUpRequest;
 import app.fitness.repositories.UserRepository;
+import app.fitness.security.CurrentUser;
 import app.fitness.security.TokenProvider;
+import app.fitness.security.UserPrincipal;
+import org.apache.tomcat.util.http.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +25,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller //Rest
 //@RequestMapping("/auth")
@@ -40,8 +44,8 @@ public class AuthController {
     @Autowired
     private TokenProvider tokenProvider;
 
-    @PostMapping("/oauth2/redirect/log")
-    public /*ResponseEntity<?>*/ String authenticateUser(@Valid @RequestBody LoginRequest loginRequest, Model model) {
+    /*@PostMapping("/oauth2/redirect/log")
+    public ResponseEntity<?> String authenticateUser(@Valid @RequestBody LoginRequest loginRequest, Model model) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -60,7 +64,7 @@ public class AuthController {
     }
 
     @PostMapping("/oauth2/redirect/register")
-    public /*ResponseEntity<?>*/ String registerUser(@Valid @RequestBody SignUpRequest signUpRequest, Model model) {
+    public ResponseEntity<?> String registerUser(@Valid @RequestBody SignUpRequest signUpRequest, Model model) {
         if(userRepository.existsByEmail(signUpRequest.getEmail())) {
             throw new BadRequestException("Email address already in use.");
         }
@@ -85,6 +89,47 @@ public class AuthController {
        // return ResponseEntity.created(location)
          //       .body(new ApiResponse(true, "User registered successfully@"));
         return "logInto";
+    }*/
+
+    @PostMapping("/oauth2/authEmail")
+    public String authForm(@ModelAttribute User user, Model model){
+        Long userId = new Long(-1);
+        if(userRepository.findByEmail(user.getEmail()).isPresent())
+            userId = userRepository.findByEmail(user.getEmail()).get().getId();
+        System.out.println("UserId in authForm = "+ userId);
+        user.setId(userId); //!!!!!!!!!!!!
+        model.addAttribute("user", user);
+        model.addAttribute("banner", "Jesteś starym użytkownikiem i zostałeś teraz zalogowany");
+        DailyExercise dexer = new DailyExercise();
+        model.addAttribute("dailyExer", dexer);
+        System.out.println("User added in authEmail");
+        return "logInto";
     }
+
+
+    @GetMapping("/oauth2/authForm")
+    public String authForm(Model model){
+        User user = new User();
+        model.addAttribute("user", user);
+        return "authForm";
+    }
+
+    /*@GetMapping("/oauth2/arrangeTraining")
+    public ResponseEntity<?> String arrangeTraining(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+         String name = authentication.getName();
+         System.out.println("Name = "+ name);
+        /*if(userPrincipal==null){
+            System.out.println("UserPrincipal is null ");
+            return ResponseEntity.ok(new ApiResponse(false, "arrangeTraining is null"));
+        }
+        System.out.println("UserPrincipal id = " + userPrincipal.getId());
+        LoggedExercise logEx = new LoggedExercise();
+        String arrangeTraining = "arrangeTraining";
+        //return ResponseEntity.ok(new ApiResponse(true, "arrangeTraining"));
+    }*/
+
+
+
 
 }

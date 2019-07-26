@@ -160,9 +160,13 @@ public class UserController {
     }
 
 
-    @GetMapping("/oauth2/logInto")
-    public String oauth2RedirectLog(Model model) {
-        User user = new User();
+    @PostMapping("/oauth2/logInto")
+    public String oauth2LogInto(@ModelAttribute User user, Model model) {
+        Long userId = new Long(-1);
+        if(userRepository.findByEmail(user.getEmail()).isPresent())
+            userId = userRepository.findByEmail(user.getEmail()).get().getId();
+        user.setId(userId); //!!!!!!!!!!!!
+        System.out.println("User email = "+ user.getEmail() + ", userId = " + userId);
         model.addAttribute("user", user);
         model.addAttribute("banner", "Jesteś starym użytkownikiem i zostałeś teraz zalogowany");
         Map<String, Exercise> attributes = new HashMap<>();
@@ -177,12 +181,31 @@ public class UserController {
         return "logInto";
     }
 
+    @GetMapping("/oauth2/logInto/{userId}")
+    public String getUserLogById(@PathVariable("userId") Long userId, Model model){
+        Long id = new Long(-1);
+        if(userRepository.findById(userId).isPresent())
+            userId = userRepository.findById(userId).get().getId();
+        System.out.println("User  "+ "," + "userId = " + userId);
+        User user = new User();
+        user.setId(userId); //!!!!!!!!!!!!
+        model.addAttribute("user", user);
+        DailyExercise dexer = new DailyExercise();
+        model.addAttribute("dailyExer", dexer);
+        return "logInto";
+    }
+
     @PostMapping(value = "/oauth2/getCustomizedExercises")
     //@PreAuthorize("hasRole('USER')")
-    public /*ResponseEntity<?>*/ String getCustomizedExercises(@CurrentUser UserPrincipal userPrincipal, @RequestBody BodyParametersRequest parameters, Model model){
-        System.out.println("User = " +  userPrincipal.getId() + ", " + userPrincipal.getName());
+    public /*ResponseEntity<?>*/ String getCustomizedExercises(@ModelAttribute User user, BindingResult result, Model model){
+        if(result.hasErrors()){
+            System.out.println("Error in binding in getCustomizedExercises");
+            return "logInto";
+        }
+        model.addAttribute("user", user);
+        System.out.println("User in getCustomizedExercises = " +  user.getId());
         Integer defaultNumOfDaysForTraining = 7;
-        Integer relShape = parameters.getRelativeShape();//user.getBodyParameters().getRelativeShape();
+        Integer relShape = user.getBodyParameters().getRelativeShape();
         System.out.println("RelShape = " + relShape);
         Map<Integer, List<Exercise>> exercisesForNumOfDays = userService.prepareExercisesForGivenPeriodOfTime(defaultNumOfDaysForTraining,
                 relShape);
@@ -202,15 +225,23 @@ public class UserController {
         return "getCustomizedExercises";
     }
 
-    @RequestMapping(value = "/oauth2/redirect/arrangeTrainingPart", method = RequestMethod.POST)
+    @RequestMapping(value = "/oauth2/arrangeTrainingPart", method = RequestMethod.POST)
     public String arrangeTrainingPart(@RequestBody DailyExercise exer, BindingResult result, Model model){
         System.out.println("Exercise successfully posted with exer date = " + exer.getDate() + "  exer name = "+ exer.getName() + " exer rounds = "+exer.getRounds());
         userService.dailyExercises.add(exer);
         return "arrangeTrainingPart";
     }
 
-    @GetMapping("/oauth2/redirect/arrangeTraining")
-    public String arrangeTraining(Model model){
+    @GetMapping("/oauth2/arrangeTraining/{userId}")
+    public String arrangeTraining(@PathVariable("userId") Long userId, Model model){
+        Long id = new Long(-1);
+        if(userRepository.findById(userId).isPresent())
+            userId = userRepository.findById(userId).get().getId();
+        System.out.println("UserId in arrangeTraining = "+ userId);
+        User user = new User();
+        user.setId(userId); //!!!!!!!!!!!!
+        model.addAttribute("user", user);
+        //System.out.println("UserPrincipal = " + userPrincipal.getId() + ", " + userPrincipal.getName());
         model.addAttribute("exercisesList", userService.dailyExercises);
         LoggedExercise logEx = new LoggedExercise();
         for(DailyExercise ex: userService.dailyExercises){
@@ -222,7 +253,7 @@ public class UserController {
 
 
 
-    @PostMapping("/oauth2/redirect/logDailyExercise")
+    @PostMapping("/oauth2/logDailyExercise")
     //@RequestMapping(value = "/logDailyExercise", method = RequestMethod.POST ) // MediaType.APPLICATION_FORM_URLENCODED_VALUE
     public String logDailyExercise(@ModelAttribute LoggedExercise logExer, BindingResult result, Model model){
         userService.loggedDailyExercises.add(logExer);
@@ -231,17 +262,17 @@ public class UserController {
         return "logDailyExercise";
     }
 
-    @GetMapping("/oauth2/redirect/submitDailyExercises")
+    @GetMapping("/oauth2/submitDailyExercises")
     public String submitDailyExercises(Model model){
         model.addAttribute("loggedExercises", userService.loggedDailyExercises);
         return "submitDailyExercises";
     }
 
-    @GetMapping("/user/me")
+    /*@GetMapping("/user/me")
     @PreAuthorize("hasRole('USER')")
     public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
         return userRepository.findById(userPrincipal.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
-    }
+    }*/
 
 }

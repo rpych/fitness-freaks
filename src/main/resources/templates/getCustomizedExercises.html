@@ -11,15 +11,15 @@
 <body>
 <div class="row">
     <div class="page-header" id="pageHead"> <!-- style="background-color: lightgrey;" -->
-        <a href="#" th:href="@{/oauth2/redirect/log}" id="homeLink" role="link">HOME</a>
+        <a href="#" th:href="@{'/oauth2/logInto/'+${user.id}}" id="homeLink" role="link">HOME</a>
     </div>
 </div>
 <div class="row">
         <div class="col-4">
             <div class="list-group" id="myList" role="tablist">
                 <tr th:each="exerciseList: ${exercisesMap}">
-                    <a class="list-group-item list-group-item-action active" data-toggle="list" th:href="'#'+${exerciseList.key}" th:if="${exerciseList.key} == 0" role="tab"><td th:text="'Day ' + ${exerciseList.key+1}" /></a>
-                    <a class="list-group-item list-group-item-action" data-toggle="list" th:href="'#'+${exerciseList.key}" th:unless="${exerciseList.key} == 0" role="tab"><td th:text="'Day ' + ${exerciseList.key+1}" /> </a>
+                    <a class="list-group-item list-group-item-action active" data-toggle="list" th:href="'#'+${exerciseList.key}" th:if="${exerciseList.key} == 0" role="tab"><td th:text="'Dzień ' + ${exerciseList.key+1}" /></a>
+                    <a class="list-group-item list-group-item-action" data-toggle="list" th:href="'#'+${exerciseList.key}" th:unless="${exerciseList.key} == 0" role="tab"><td th:text="'Dzień ' + ${exerciseList.key+1}" /> </a>
                 </tr>
             </div>
         </div>
