@@ -38,9 +38,14 @@ public class UserService {
         dailyExerciseRepository.save(dailyExercise);
     }
 
+    public void saveLoggedExerciseByUserId(Long id, LoggedExercise loggedExercise){
+        loggedExercise.setId(id);
+        loggedExerciseRepository.save(loggedExercise);
+    }
+
     public List<DailyExercise> getDailyExercisesForUserId(Long id){
         Long ids[] = {id};
-       return dailyExerciseRepository.getDailyExercisesByUserId(id);
+       return dailyExerciseRepository.getDailyExercisesById(id);
     }
 
     public void addUser(User user) {

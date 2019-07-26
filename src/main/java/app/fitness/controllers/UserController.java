@@ -215,13 +215,6 @@ public class UserController {
                 System.out.println("Key = " + e.getKey() + ", Values = " + ex.getName());
         }
 
-        /*URI location = ServletUriComponentsBuilder
-                .fromCurrentContextPath().path("/user/me")
-                .buildAndExpand(userPrincipal.getId()).toUri();
-
-        return ResponseEntity.created(location)
-                .body(new ApiResponse(true, "Exercises created."));*/
-        //return ResponseEntity.ok(new ApiResponse(true, "Exercise updated."));
         model.addAttribute("exercisesMap", exercisesForNumOfDays);
         return "getCustomizedExercises";
     }
@@ -261,6 +254,7 @@ public class UserController {
     public String logDailyExercise(@PathVariable("userId") Long userId, @ModelAttribute LoggedExercise logExer, BindingResult result, Model model){
         logExer.setId(userId);
         userService.loggedDailyExercises.add(logExer);
+        userService.saveLoggedExerciseByUserId(userId, logExer);
         model.addAttribute("logExer", logExer);
         System.out.println("Logged exercise with exer date = " + logExer.getDate() + "  exer name = "+ logExer.getName() + " exer rounds = "+logExer.getAllRepetitions());
         return "logDailyExercise";

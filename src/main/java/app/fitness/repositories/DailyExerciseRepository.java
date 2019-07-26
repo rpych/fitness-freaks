@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface DailyExerciseRepository extends JpaRepository<DailyExercise, Long> {
-    List<DailyExercise> getDailyExercisesByUserId(Long id);
+    List<DailyExercise> getDailyExercisesById(Long id);
 }
