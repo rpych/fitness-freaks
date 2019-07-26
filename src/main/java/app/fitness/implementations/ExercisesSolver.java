@@ -37,7 +37,7 @@ public class ExercisesSolver {
         repetitionsUpperBoundPerExercise.put("Martwy ciąg", 8);
     }
 
-    public Exercise getCustomExercise(String exerName, Integer relShape){
+    public DailyExercise getCustomExercise(String date, String exerName, Integer relShape){
         Integer maxRounds = roundsUpperBoundPerExercise.getOrDefault(exerName, 6);
         Integer maxRepetitions = repetitionsUpperBoundPerExercise.getOrDefault(exerName, 7);
         if(relShape < WEAK_SHAPE){
@@ -56,7 +56,7 @@ public class ExercisesSolver {
             maxRounds /= 3;
             maxRepetitions /= 3;
         }
-        Exercise ex = new Exercise(exerName, maxRounds, maxRepetitions);
+        DailyExercise ex = new DailyExercise(date, exerName, maxRounds, maxRepetitions);
         return ex;
     }
 

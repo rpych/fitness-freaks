@@ -1,6 +1,8 @@
 package app.fitness.services;
 
 import app.fitness.implementations.*;
+import app.fitness.repositories.DailyExerciseRepository;
+import app.fitness.repositories.LoggedExerciseRepository;
 import app.fitness.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,15 +17,30 @@ public class UserService {
     public List<LoggedExercise> loggedDailyExercises = new LinkedList<>();
 
     private UserRepository userRepository;
+    private DailyExerciseRepository dailyExerciseRepository;
+    private LoggedExerciseRepository loggedExerciseRepository;
     private ExercisesSolver exercisesSolver;
 
     @Autowired
-    public UserService(UserRepository userRepository, ExercisesSolver exercisesSolver) {
+    public UserService(UserRepository userRepository,DailyExerciseRepository dailyExerciseRepository,
+                       LoggedExerciseRepository loggedExerciseRepository, ExercisesSolver exercisesSolver) {
         this.userRepository = userRepository;
         this.exercisesSolver = exercisesSolver;
+        this.dailyExerciseRepository = dailyExerciseRepository;
+        this.loggedExerciseRepository = loggedExerciseRepository;
     }
 
     public UserService() {
+    }
+
+    public void saveDailyExerciseByUserId(Long id, DailyExercise dailyExercise){
+        dailyExercise.setId(id);
+        dailyExerciseRepository.save(dailyExercise);
+    }
+
+    public List<DailyExercise> getDailyExercisesForUserId(Long id){
+        Long ids[] = {id};
+       return dailyExerciseRepository.getDailyExercisesByUserId(id);
     }
 
     public void addUser(User user) {
@@ -44,21 +61,21 @@ public class UserService {
            return user.orElseThrow(() -> new IllegalArgumentException("User with id = " + id + " does not exist"));
     }
 
-    public Map<Integer, List<Exercise> > prepareExercisesForGivenPeriodOfTime(Integer numOfDays, Integer relShape){
-       Map<Integer, List<Exercise> > exercisesForNumOfDays = new HashMap<>();
+    public Map<Integer, List<DailyExercise> > prepareExercisesForGivenPeriodOfTime(Integer numOfDays, Integer relShape){
+       Map<Integer, List<DailyExercise> > exercisesForNumOfDays = new HashMap<>();
         for(int i=0;i<numOfDays;++i){
-            List<Exercise> exersListForOneDay = prepareExercisesForOneDay(relShape);
+            List<DailyExercise> exersListForOneDay = prepareExercisesForOneDay(relShape);
             exercisesForNumOfDays.put(i, exersListForOneDay);
         }
         return exercisesForNumOfDays;
     }
 
-    public List<Exercise> prepareExercisesForOneDay(Integer relShape){
-        List<Exercise> exercisesForOneDay = new LinkedList<>();
+    public List<DailyExercise> prepareExercisesForOneDay(Integer relShape){
+        List<DailyExercise> exercisesForOneDay = new LinkedList<>();
         Integer exersNum = exercisesSolver.getExerciseNames().size();
         for(int i=0;i<exersNum;++i){
             String exerName = exercisesSolver.getExerciseNames().get(i);
-            Exercise ex = exercisesSolver.getCustomExercise(exerName, relShape);
+            DailyExercise ex = exercisesSolver.getCustomExercise("Day"+i, exerName, relShape);
             exercisesForOneDay.add(ex);
         }
         return exercisesForOneDay;

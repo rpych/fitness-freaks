@@ -207,13 +207,14 @@ public class UserController {
         Integer defaultNumOfDaysForTraining = 7;
         Integer relShape = user.getBodyParameters().getRelativeShape();
         System.out.println("RelShape = " + relShape);
-        Map<Integer, List<Exercise>> exercisesForNumOfDays = userService.prepareExercisesForGivenPeriodOfTime(defaultNumOfDaysForTraining,
+        Map<Integer, List<DailyExercise>> exercisesForNumOfDays = userService.prepareExercisesForGivenPeriodOfTime(defaultNumOfDaysForTraining,
                 relShape);
         System.out.println("Size = " + exercisesForNumOfDays.size());
-        for(Map.Entry<Integer, List<Exercise> > e: exercisesForNumOfDays.entrySet()){
-            for(Exercise ex: e.getValue())
+        for(Map.Entry<Integer, List<DailyExercise> > e: exercisesForNumOfDays.entrySet()){
+            for(DailyExercise ex: e.getValue())
                 System.out.println("Key = " + e.getKey() + ", Values = " + ex.getName());
         }
+
         /*URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/user/me")
                 .buildAndExpand(userPrincipal.getId()).toUri();
@@ -225,10 +226,11 @@ public class UserController {
         return "getCustomizedExercises";
     }
 
-    @RequestMapping(value = "/oauth2/arrangeTrainingPart", method = RequestMethod.POST)
-    public String arrangeTrainingPart(@RequestBody DailyExercise exer, BindingResult result, Model model){
+    @RequestMapping(value = "/oauth2/arrangeTrainingPart/{id}", method = RequestMethod.POST)
+    public String arrangeTrainingPart(@PathVariable("id") Long id, @RequestBody DailyExercise exer, BindingResult result, Model model){
         System.out.println("Exercise successfully posted with exer date = " + exer.getDate() + "  exer name = "+ exer.getName() + " exer rounds = "+exer.getRounds());
         userService.dailyExercises.add(exer);
+        userService.saveDailyExerciseByUserId(id, exer);
         return "arrangeTrainingPart";
     }
 
@@ -242,9 +244,10 @@ public class UserController {
         user.setId(userId); //!!!!!!!!!!!!
         model.addAttribute("user", user);
         //System.out.println("UserPrincipal = " + userPrincipal.getId() + ", " + userPrincipal.getName());
-        model.addAttribute("exercisesList", userService.dailyExercises);
+        List<DailyExercise> dailyExercises = userService.getDailyExercisesForUserId(userId);
+        model.addAttribute("exercisesList", dailyExercises);
         LoggedExercise logEx = new LoggedExercise();
-        for(DailyExercise ex: userService.dailyExercises){
+        for(DailyExercise ex: dailyExercises){
             System.out.println(ex.getDate() + " ," + ex.getName());
         }
         model.addAttribute("loggedExercise", logEx);
@@ -253,9 +256,10 @@ public class UserController {
 
 
 
-    @PostMapping("/oauth2/logDailyExercise")
+    @PostMapping("/oauth2/logDailyExercise/{userId}")
     //@RequestMapping(value = "/logDailyExercise", method = RequestMethod.POST ) // MediaType.APPLICATION_FORM_URLENCODED_VALUE
-    public String logDailyExercise(@ModelAttribute LoggedExercise logExer, BindingResult result, Model model){
+    public String logDailyExercise(@PathVariable("userId") Long userId, @ModelAttribute LoggedExercise logExer, BindingResult result, Model model){
+        logExer.setId(userId);
         userService.loggedDailyExercises.add(logExer);
         model.addAttribute("logExer", logExer);
         System.out.println("Logged exercise with exer date = " + logExer.getDate() + "  exer name = "+ logExer.getName() + " exer rounds = "+logExer.getAllRepetitions());

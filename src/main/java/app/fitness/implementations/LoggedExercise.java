@@ -1,7 +1,13 @@
 package app.fitness.implementations;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class LoggedExercise {
 
+    @Id
+    private Long id;
     private String date;
     private String name;
     private Integer allRepetitions;
@@ -13,6 +19,14 @@ public class LoggedExercise {
     }
 
     public LoggedExercise() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDate() {

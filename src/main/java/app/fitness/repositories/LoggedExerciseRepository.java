@@ -1,4 +1,9 @@
 package app.fitness.repositories;
 
-public interface LoggedExerciseRepository {
+import app.fitness.implementations.LoggedExercise;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface LoggedExerciseRepository extends JpaRepository<LoggedExercise, Long> {
 }
