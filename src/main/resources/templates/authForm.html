@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Fitness-Freaks Home</title>
+    <!-- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/homePage.css}" type="text/css"/>
+</head>
+<body>
+<div class="row">
+    <div id="header">
+        <h3>
+            <span th:text="${banner}"></span>
+        </h3>
+    </div>
+</div>
+<form action="#" th:action="@{/oauth2/authEmail}" th:object="${user}" method="post">
+    <div class="form-group">
+        <label for="age">Podaj nazwę swojego maila:</label>
+        <input type="text" class="form-control" id="age" placeholder="Podaj email" th:field="*{email}">
+    </div>
+    <button type="submit" class="btn btn-success" >Zatwierdź</button>
+</form>
+</body>
+</html>
