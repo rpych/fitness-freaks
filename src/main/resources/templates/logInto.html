@@ -2,12 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Fitness-Freaks user panel</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+     <meta http-equiv="Content-Type" content="application/json" />
     <!--<meta th:name="_csrf" th:content="${_csrf.token}"/>
     <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
     <link rel="stylesheet" th:href="@{/css/homePage.css}" type="text/css"/>
 </head>
@@ -77,29 +77,28 @@
             </div>
             <div class="tab-pane" id="freak-instructor" role="tabpanel" aria-labelledby="freak-instructor-tab">
                 <h2>Niech Instruktor FREAK zaplanuje trening za Ciebie... :) </h2>
-                <form id="instructorFreak" action="#" th:action="@{/oauth2/redirect/getCustomizedExercises}" method="post">
+                <form id="instructorFreak" action="#" th:action="@{/oauth2/getCustomizedExercises}" method="post">
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputAge">Age</label>
-                            <input type="text" class="form-control" id="inputAge" placeholder="Wiek" th:field="${user.email}">
+                            <input type="number" class="form-control" id="inputAge" placeholder="Wiek">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputRelShape">Ocena Twojej kondycji w %</label>
-                            <input type="text" class="form-control" id="inputRelShape" placeholder="Kondycja w %" th:field="${user.bodyParameters.relativeShape}">
+                            <input type="number" class="form-control" id="inputRelShape" placeholder="Kondycja w %" > <!-- th:field="${user.bodyParameters.relativeShape}" -->
                         </div>
                     </div>
-
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputWeight">Waga</label>
-                            <input type="text" class="form-control" id="inputWeight" placeholder="Waga w kg" th:field="${user.bodyParameters.weight}">
+                            <input type="number" class="form-control" id="inputWeight" placeholder="Waga w kg">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputHeight">Wzrost</label>
-                            <input type="text" class="form-control" id="inputHeight" placeholder="Wzrost w cm" th:field="${user.bodyParameters.height}">
+                            <input type="number" class="form-control" id="inputHeight" placeholder="Wzrost w cm">
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-success">Zatwierdź</button>
+                    <button type="submit" class="btn btn-success" onclick="getCustomizedExercises()">Zatwierdź</button>
                 </form>
             </div>
             <div class="tab-pane" id="help" role="tabpanel" aria-labelledby="help-tab">
@@ -118,6 +117,7 @@
     </div>
 </div>
 <div id="feedback"></div>
+<script th:src="@{/js/logInto.js}"></script>
 <script>
    /* $(document).ready(function () {
        $("instructorFreak").submit(function (event) {

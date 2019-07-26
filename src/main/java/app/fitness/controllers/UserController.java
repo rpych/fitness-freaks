@@ -1,14 +1,18 @@
 package app.fitness.controllers;
 
 import app.fitness.implementations.*;
+import app.fitness.payload.ApiResponse;
+import app.fitness.payload.BodyParametersRequest;
 import app.fitness.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -129,6 +133,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import javax.validation.Valid;
 
 @Controller //Rest
 public class UserController {
@@ -147,8 +154,13 @@ public class UserController {
         return "home";
     }
 
+    @GetMapping("/oauth2/redirect")
+    public String redirect(Model model) {
+        return "redirect";
+    }
 
-    @GetMapping("/oauth2/redirect/log")
+
+    @GetMapping("/oauth2/logInto")
     public String oauth2RedirectLog(Model model) {
         User user = new User();
         model.addAttribute("user", user);
@@ -163,35 +175,15 @@ public class UserController {
         model.addAttribute("dailyExer", dexer);
         System.out.println("User added in log");
         return "logInto";
-
     }
 
-    @GetMapping("/oauth2/redirect/register")
-    public String oauth2RedirectRegister(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
-        model.addAttribute("banner", "Zostałeś pomyślnie zarejestrowany");
-        Map<String, Exercise> attributes = new HashMap<>();
-        attributes.put("exer1", new Exercise());
-        attributes.put("exer2", new Exercise("Brzuszki"));
-        attributes.put("exer3", new Exercise("Deska"));
-        attributes.put("exer4", new Exercise("Podciąganie na drążku"));
-        attributes.put("exer5", new Exercise("Martwy ciąg"));
-        DailyExercise dexer = new DailyExercise();
-        model.addAttribute("dailyExer", dexer);
-        System.out.println("User added in register");
-        return "logInto";
-
-    }
-
-    @PostMapping("/oauth2/redirect/getCustomizedExercises")
-    public String getCustomizedExercises(@ModelAttribute User user, BindingResult result, Model model){
-        if(result.hasErrors()) {
-            System.out.println("Errors in binding");
-            return "logInto";
-        }
+    @PostMapping(value = "/oauth2/getCustomizedExercises")
+    //@PreAuthorize("hasRole('USER')")
+    public /*ResponseEntity<?>*/ String getCustomizedExercises(@CurrentUser UserPrincipal userPrincipal, @RequestBody BodyParametersRequest parameters, Model model){
+        System.out.println("User = " +  userPrincipal.getId() + ", " + userPrincipal.getName());
         Integer defaultNumOfDaysForTraining = 7;
-        Integer relShape = user.getBodyParameters().getRelativeShape();
+        Integer relShape = parameters.getRelativeShape();//user.getBodyParameters().getRelativeShape();
+        System.out.println("RelShape = " + relShape);
         Map<Integer, List<Exercise>> exercisesForNumOfDays = userService.prepareExercisesForGivenPeriodOfTime(defaultNumOfDaysForTraining,
                 relShape);
         System.out.println("Size = " + exercisesForNumOfDays.size());
@@ -199,6 +191,13 @@ public class UserController {
             for(Exercise ex: e.getValue())
                 System.out.println("Key = " + e.getKey() + ", Values = " + ex.getName());
         }
+        /*URI location = ServletUriComponentsBuilder
+                .fromCurrentContextPath().path("/user/me")
+                .buildAndExpand(userPrincipal.getId()).toUri();
+
+        return ResponseEntity.created(location)
+                .body(new ApiResponse(true, "Exercises created."));*/
+        //return ResponseEntity.ok(new ApiResponse(true, "Exercise updated."));
         model.addAttribute("exercisesMap", exercisesForNumOfDays);
         return "getCustomizedExercises";
     }
