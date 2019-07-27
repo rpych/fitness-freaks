@@ -56,9 +56,38 @@ public class UserService {
         System.out.println("LoggedExercise already in database");
     }
 
-    public List<DailyExercise> getDailyExercisesForUserId(Long id){
-        Long ids[] = {id};
+    public List<DailyExercise> getDailyExercisesByUserId(Long id){
        return dailyExerciseRepository.getDailyExercisesById(id);
+    }
+
+    public List<LoggedExercise> getLoggedExercisesByUserId(Long id){
+        return loggedExerciseRepository.findAllById(id);
+    }
+
+    public LoggedExercise getLoggedExerciseCorrespondingDailyExercise(List<LoggedExercise> loggedExercises, DailyExercise dex){
+        for(LoggedExercise logEx: loggedExercises){
+            if(logEx.getDate().equals(dex.getDate()) && logEx.getName().equals(dex.getName())){
+                return logEx;
+            }
+        }
+        return null;
+    }
+
+    public List<ExerciseComparison> getComparisonBetweenLoggedAndAssumedExercises(Long userId, int limit){
+        List<ExerciseComparison> exerciseComparisons = new LinkedList<>();
+        List<LoggedExercise> loggedExercises = getLoggedExercisesByUserId(userId);
+        List<DailyExercise>  assumedExercises = getDailyExercisesByUserId(userId);
+        int counter = 0;
+        for(DailyExercise dex: assumedExercises){
+            if(counter++ > limit){ break; }
+            LoggedExercise logEx = getLoggedExerciseCorrespondingDailyExercise(loggedExercises, dex);
+            if(logEx != null){
+                ExerciseComparison exComp = new ExerciseComparison(logEx.getName(), logEx.getDate(),
+                        logEx.getAllRepetitions(), dex.getRounds() * dex.getRepetitionsInOneRound());
+                exerciseComparisons.add(exComp);
+            }
+        }
+        return exerciseComparisons;
     }
 
     public void addUser(User user) {

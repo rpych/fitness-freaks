@@ -169,12 +169,6 @@ public class UserController {
         System.out.println("User email = "+ user.getEmail() + ", userId = " + userId);
         model.addAttribute("user", user);
         model.addAttribute("banner", "Jesteś starym użytkownikiem i zostałeś teraz zalogowany");
-        Map<String, Exercise> attributes = new HashMap<>();
-        attributes.put("exer1", new Exercise());
-        attributes.put("exer2", new Exercise("Brzuszki"));
-        attributes.put("exer3", new Exercise("Deska"));
-        attributes.put("exer4", new Exercise("Podciąganie na drążku"));
-        attributes.put("exer5", new Exercise("Martwy ciąg"));
         DailyExercise dexer = new DailyExercise();
         model.addAttribute("dailyExer", dexer);
         System.out.println("User added in log");
@@ -237,7 +231,7 @@ public class UserController {
         user.setId(userId); //!!!!!!!!!!!!
         model.addAttribute("user", user);
         //System.out.println("UserPrincipal = " + userPrincipal.getId() + ", " + userPrincipal.getName());
-        List<DailyExercise> dailyExercises = userService.getDailyExercisesForUserId(userId);
+        List<DailyExercise> dailyExercises = userService.getDailyExercisesByUserId(userId);
         model.addAttribute("exercisesList", dailyExercises);
         LoggedExercise logEx = new LoggedExercise();
         for(DailyExercise ex: dailyExercises){
@@ -258,6 +252,18 @@ public class UserController {
         model.addAttribute("logExer", logExer);
         System.out.println("Logged exercise with exer date = " + logExer.getDate() + "  exer name = "+ logExer.getName() + " exer rounds = "+logExer.getAllRepetitions());
         return "logDailyExercise";
+    }
+
+    @GetMapping("/oauth2/getUserExercises/{userId}")
+    public String getUserExercises(@PathVariable("userId") Long userId, Model model){
+        int limit = 5;
+        List<ExerciseComparison> exercisesList = userService.getComparisonBetweenLoggedAndAssumedExercises(userId, limit);
+        for(ExerciseComparison ex: exercisesList){
+            System.out.println("Exercise in getUserExercise = " + ex.getName() + ", " + ex.getDate() + ", "+ ex.getAssumedRepetitions() + ", " + ex.getLoggedRepetitions());
+        }
+        model.addAttribute("exercisesList", exercisesList);
+        model.addAttribute("userId", userId);
+        return "userById";
     }
 
     @GetMapping("/oauth2/submitDailyExercises")

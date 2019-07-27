@@ -20,8 +20,8 @@
     <div class="col-4">
         <div class="list-group" id="myList" role="tablist">
             <tr th:each="exercise,i: ${exercisesList}">
-                <a class="list-group-item list-group-item-action active" data-toggle="list" th:href="'#'+${i.index}" th:if="${i.index} == 0" role="tab"><td th:text="'Day ' + ${exercise.date} + ', '+ ${exercise.name}" /></a>
-                <a class="list-group-item list-group-item-action" data-toggle="list" th:href="'#'+${i.index}" th:unless="${i.index} == 0" role="tab"><td th:text="'Day ' + ${exercise.date} + ', '+ ${exercise.name}" /> </a>
+                <a class="list-group-item list-group-item-action active" data-toggle="list" th:href="'#'+${i.index}" th:if="${i.index} == 0" role="tab"><td th:text="'Dzień: ' + ${exercise.date} + ', '+ ${exercise.name}" /></a>
+                <a class="list-group-item list-group-item-action" data-toggle="list" th:href="'#'+${i.index}" th:unless="${i.index} == 0" role="tab"><td th:text="'Dzień: ' + ${exercise.date} + ', '+ ${exercise.name}" /> </a>
             </tr>
         </div>
     </div>

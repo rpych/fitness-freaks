@@ -1,11 +1,78 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Getting Started: Serving Web Content</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Fitness-Freaks user panel</title>
+    <!-- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />-->
+    <!-- <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/homePage.css}" type="text/css"/>
 </head>
 <body>
-    <p th:text="'USER ID is: ' + ${user.id} + '!'" />
-    <p th:text="'USER Name is: ' + ${user.name} + '!'" />
+<div class="row">
+    <div class="page-header" id="pageHead"> <!-- style="background-color: lightgrey;" -->
+        <a href="#" th:href="@{'/oauth2/logInto/'+${userId}}" id="homeLink" role="link">HOME</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-4">
+        <div class="list-group" id="myList" role="tablist">
+            <tr th:each="exercise,i: ${exercisesList}">
+                <a class="list-group-item list-group-item-action active" data-toggle="list" th:href="'#'+${i.index}" th:if="${i.index} == 0" role="tab"><td th:text="'Dzień: ' + ${exercise.date} + ', '+ ${exercise.name}" /></a>
+                <a class="list-group-item list-group-item-action" data-toggle="list" th:href="'#'+${i.index}" th:unless="${i.index} == 0" role="tab"><td th:text="'Dzień: ' + ${exercise.date} + ', '+ ${exercise.name}" /> </a>
+            </tr>
+        </div>
+    </div>
+    <div class="col-8">
+        <div class="tab-content">
+            <div id="feedback"></div>
+            <th:block th:each="exercise,i: ${exercisesList}">
+                <div class="tab-pane active" th:if="${i.index} == 0" th:id="${i.index}" role="tabpanel">
+                        <div class="row">
+                            <!-- <div class="col-md-3">
+                                <p th:text="'Data ćwiczenia' + ${exercise.date}"></p>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="'Nazwa ćwiczenia' + ${exercise.name}"></p>
+                            </div> -->
+                            <div class="col-md-3">
+                                <h4 th:text="'Zakładana ilość powtórzeń ćwiczenia: ' + ${exercise.assumedRepetitions}"></h4>
+                            </div>
+                            <div class="col-md-3">
+                                <h4 th:text="'Wykonana ilość powtórzeń ćwiczenia: ' + ${exercise.loggedRepetitions}"></h4>
+                            </div>
+                        </div>
+                </div>
+                <div class="tab-pane" th:unless="${i.index} == 0" th:id="${i.index}" role="tabpanel">
+                    <div class="row">
+                       <!-- <div class="col-md-3">
+                            <p th:text="'Data ćwiczenia' + ${exercise.date}"></p>
+                        </div>
+                        <div class="col-md-3">
+                            <p th:text="'Nazwa ćwiczenia' + ${exercise.name}"></p>
+                        </div> -->
+                        <div class="col-md-3">
+                            <h4 th:text="'Zakładana ilość powtórzeń ćwiczenia: ' + ${exercise.assumedRepetitions}"></h4>
+                        </div>
+                        <div class="col-md-3">
+                            <h4 th:text="'Wykonana ilość powtórzeń ćwiczenia: ' + ${exercise.loggedRepetitions}"></h4>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+    </div>
+</div>
+<!-- <div class="row">
+    <div class="col-md-4">
+        <a href="#" th:href="@{/oauth2/redirect/submitDailyExercises}" id="submitLog" class="btn btn-primary" role="button">Zatwierdź logowanie ćwiczeń</a>
+    </div>
+</div> -->
+<div class="row">
+    <div id="feedbackDiv">
+    </div>
+</div>
 </body>
 </html>
