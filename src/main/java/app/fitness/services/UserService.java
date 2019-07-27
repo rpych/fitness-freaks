@@ -35,12 +35,25 @@ public class UserService {
 
     public void saveDailyExerciseByUserId(Long id, DailyExercise dailyExercise){
         dailyExercise.setId(id);
-        dailyExerciseRepository.save(dailyExercise);
+        DailyExercise res = dailyExerciseRepository.findDailyExerciseByIdAndNameAndDate(dailyExercise.getId(),
+                dailyExercise.getName(), dailyExercise.getDate());
+        if(res == null){
+            dailyExerciseRepository.save(dailyExercise);
+            return;
+        }
+        System.out.println("DailyExercise already in database");
+
     }
 
     public void saveLoggedExerciseByUserId(Long id, LoggedExercise loggedExercise){
         loggedExercise.setId(id);
-        loggedExerciseRepository.save(loggedExercise);
+        LoggedExercise res = loggedExerciseRepository.findLoggedExerciseByIdAndNameAndDate(loggedExercise.getId(),
+                loggedExercise.getName(), loggedExercise.getDate());
+        if(res == null){
+            loggedExerciseRepository.save(loggedExercise);
+            return;
+        }
+        System.out.println("LoggedExercise already in database");
     }
 
     public List<DailyExercise> getDailyExercisesForUserId(Long id){

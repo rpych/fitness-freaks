@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LoggedExerciseRepository extends JpaRepository<LoggedExercise, Long> {
+    LoggedExercise findLoggedExerciseByIdAndNameAndDate(Long id, String name, String date);
 }

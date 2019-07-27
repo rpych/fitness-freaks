@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface DailyExerciseRepository extends JpaRepository<DailyExercise, Long> {
     List<DailyExercise> getDailyExercisesById(Long id);
+    DailyExercise findDailyExerciseByIdAndNameAndDate(Long id, String name, String date);
 }

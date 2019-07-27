@@ -1,13 +1,15 @@
 package app.fitness.implementations;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class LoggedExercise {
 
     @Id
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "primary_id", nullable = false)
+    private Long primaryId;
+    private Long id; //userId
     private String date;
     private String name;
     private Integer allRepetitions;
@@ -19,6 +21,14 @@ public class LoggedExercise {
     }
 
     public LoggedExercise() {
+    }
+
+    public Long getPrimaryId() {
+        return primaryId;
+    }
+
+    public void setPrimaryId(Long primaryId) {
+        this.primaryId = primaryId;
     }
 
     public Long getId() {
