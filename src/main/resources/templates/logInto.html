@@ -3,8 +3,6 @@
 <head>
     <title>Fitness-Freaks user panel</title>
      <meta http-equiv="Content-Type" content="application/json" />
-    <!--<meta th:name="_csrf" th:content="${_csrf.token}"/>
-    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
@@ -12,13 +10,18 @@
     <link rel="stylesheet" th:href="@{/css/homePage.css}" type="text/css"/>
 </head>
 <body>
-<div class="row">
-    <div class="page-header" id="pageHead"> <!-- style="background-color: lightgrey;" -->
-        <a href="#" th:href="@{'/oauth2/logInto/'+${user.id}}" id="homeLink1" role="link">HOME</a> <!-- th:href="@{/oauth2/logInto/{userId}(userId=${user.getId()})}" -->
-
+<div class="card">
+    <div class="card-header">
+        <div class="col-md">
+            <strong class="text-left">
+                <a href="#" th:href="@{'/oauth2/logInto/'+${user.id}}" id="homeLink1" role="link">Strona startowa</a>
+            </strong>
+            <h6 class="text-right">Wyloguj się</h6>
+        </div>
     </div>
 </div>
-<div class="container-fluid">
+
+<div class="container-fluid page-content">
         <ul class="nav nav-tabs" id="myTab" data-toggle="tab" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" id="advance-tab" data-toggle="tab" href="#advance" role="tab" aria-controls="advance" aria-selected="true">Postępy treningu</a>
@@ -80,10 +83,10 @@
                 <h2>Niech Instruktor FREAK zaplanuje trening za Ciebie... :) </h2>
                 <form id="instructorFreak" action="#" th:action="@{'/oauth2/getCustomizedExercises/'+${user.id}}" method="post">
                     <div class="form-row">
-                        <!-- <div class="form-group col-md-4" style="display:none;">
+                         <div class="form-group col-md-4" style="display:none;">
                             <label for="userId">Id</label>
                             <input type="text" class="form-control" name="userId" id="userId" th:attr="value=${user.id}" >
-                        </div> -->
+                        </div>
                         <div class="form-group col-md-6">
                             <label for="inputAge">Wiek</label>
                             <input type="text" class="form-control" id="inputAge" placeholder="Wiek" th:field="${user.bodyParameters.age}">
@@ -118,54 +121,12 @@
             </div>
         </div>
     <div class="row" style="margin: 40px">
-        <h2 th:text="'Witaj ' + ${user.getId()} + ', ' + ${user.getEmail()}" />
+        <h2 th:text="'Witaj na stronie Fitness Freaks'"/>
     </div>
 </div>
 <div id="feedback"></div>
 <script th:src="@{/js/logInto.js}"></script>
 <script>
-   /* $(document).ready(function () {
-       $("instructorFreak").submit(function (event) {
-           event.preventDefault();
-          /* var http = new HttpClient();
-           http.Request.ContentType = "application/json";
-           http.Request.Accept = "application/json";
-           http.Request.Authorization = "Bearer d352b45d-0e5b-4c2d-a10b-c7be8c7cd3ff";
-
-           var response = http.POST();*/
-           /*var http = new XMLHttpRequest();
-           http.contentType = "application/json";
-           http.accept = "application/json";
-
-           const headers = new Headers({
-               'Content-Type': 'application/json',
-           });
-
-           var url = window.location.href;
-           access_token = url.match(/\#(?:token)\=([\S\s]*?)\&/)[1];
-           //if(localStorage.getItem(ACCESS_TOKEN)) {
-           console.log(access_token);
-           headers.append('Authorization', 'Bearer ' + access_token);
-           //}
-           options = {
-               url: "http://localhost:8080" + "getCustomizedExercises",
-               method: 'POST'
-           };
-           const defaults = {headers: headers};
-           options = Object.assign({}, defaults, options);
-
-           return fetch(options.url, options)
-               .then(response =>
-                   response.json().then(json => {
-                       if(!response.ok) {
-                           return Promise.reject(json);
-                       }
-                       return json;
-                   })
-               );
-       });
-    });*/
-
     $(document).ready(function () {
 
         $("#arrangeForm").submit(function (event) {
@@ -176,7 +137,12 @@
 
            var ajaxPostInfoDiv = document.getElementById("ajaxPostInfoDiv");
            ajaxPostInfoDiv.innerHTML = "<strong>Dodałeś nowy plan ćwiczenia</strong>";
+           ajaxPostInfoDiv.style.backgroundColor = "ForestGreen";
            $("#ajaxPostInfoDiv").fadeIn();
+           setTimeout(function(){
+               $("#ajaxPostInfoDiv").fadeOut();
+           }, 3000);
+
         });
 
     });
@@ -189,15 +155,7 @@
         search["name"] = $("#name").val();
         search["rounds"] = $("#rounds").val();
         search["repetitionsInOneRound"] = $("#repetitionsInOneRound").val();
-        //var token = $("meta[name='_csrf']").attr("content");
-        //var header = $("meta[name='_csrf_header']").attr("content");
         search["date"] = $("#date").val();
-
-       /* var url = window.location.href;
-        access_token = url.match(/\#(?:token)\=([\S\s]*?)\&/)[1];
-        $(document).ajaxSend(function(event, xhr, options) {
-            xhr.setRequestHeader(header, access_token);
-        });*/
         $("#btn-search").prop("disabled", true);
 
         $.ajax({
@@ -208,21 +166,10 @@
             dataType: 'json',
             cache: false,
             success: function () {
-
-                var json = "<h4>Ajax Response</h4><pre>"; //+ JSON.stringify(data, null, 4) + "</pre>"
+                var json = "<h4>Ajax Response</h4><pre>";
                 $('#feedback').html('<h4>Ajax Response</h4><pre>');
-
-                console.log("SUCCESS : ", data);
-               // $("#btn-search").prop("disabled", false);
-
             }
         });
-
-        /*$(document).ajaxSuccess(function (event, jqxhr, settings) {
-            $("#feedback").text(jqxhr.responseText);
-           // $("#message1").fadeIn(800);
-        });*/
-
     }
 </script>
 <script>

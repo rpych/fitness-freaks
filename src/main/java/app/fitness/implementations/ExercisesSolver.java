@@ -17,7 +17,7 @@ public class ExercisesSolver {
     public final static Integer GOOD_SHAPE = 75;
 
     public ExercisesSolver() {
-        this.exerciseNames = Arrays.asList("Pompki", "Brzuszki", "Deska", "Podciąganie na drążku", "Martwy ciąg");
+        this.exerciseNames = Arrays.asList("Pompki", "Brzuszki", "Biceps", "Podciąganie na drążku", "Martwy ciąg");
         this.roundsUpperBoundPerExercise = new HashMap<>();
         this.repetitionsUpperBoundPerExercise = new HashMap<>();
         prepareExerciseSolver();
@@ -26,35 +26,40 @@ public class ExercisesSolver {
     public void prepareExerciseSolver(){
         roundsUpperBoundPerExercise.put("Pompki", 10);
         roundsUpperBoundPerExercise.put("Brzuszki", 10);
-        roundsUpperBoundPerExercise.put("Deska", 10);
+        roundsUpperBoundPerExercise.put("Biceps", 10);
         roundsUpperBoundPerExercise.put("Podciąganie na drążku", 10);
         roundsUpperBoundPerExercise.put("Martwy ciąg", 7);
 
         repetitionsUpperBoundPerExercise.put("Pompki", 100);
         repetitionsUpperBoundPerExercise.put("Brzuszki", 100);
-        repetitionsUpperBoundPerExercise.put("Deska", 6); //minutes
+        repetitionsUpperBoundPerExercise.put("Biceps", 50);
         repetitionsUpperBoundPerExercise.put("Podciąganie na drążku", 30);
         repetitionsUpperBoundPerExercise.put("Martwy ciąg", 8);
     }
 
     public DailyExercise getCustomExercise(String date, String exerName, Integer relShape){
+        int index;
         Integer maxRounds = roundsUpperBoundPerExercise.getOrDefault(exerName, 6);
         Integer maxRepetitions = repetitionsUpperBoundPerExercise.getOrDefault(exerName, 7);
         if(relShape < WEAK_SHAPE){
-            maxRounds /= 6;
-            maxRepetitions /= 6;
+            index = (int)(Math.random() * 3 + 4);
+            maxRounds /= index;
+            maxRepetitions /= index;
         }
         else if(relShape < MED_SHAPE){
-            maxRounds /= 5;
-            maxRepetitions /= 5;
+            index = (int)(Math.random() * 2 + 4);
+            maxRounds /= index;
+            maxRepetitions /= index;
         }
         else if(relShape <GOOD_SHAPE){
-            maxRounds /= 4;
-            maxRepetitions /= 4;
+            index = (int)(Math.random() * 2 + 3);
+            maxRounds /= index;
+            maxRepetitions /= index;
         }
         else{
-            maxRounds /= 3;
-            maxRepetitions /= 3;
+            index = 3;
+            maxRounds /= index;
+            maxRepetitions /= index;
         }
         DailyExercise ex = new DailyExercise(date, exerName, maxRounds, maxRepetitions);
         return ex;

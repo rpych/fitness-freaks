@@ -1,7 +1,7 @@
 
 body
 {
-    background-color: aqua;
+    background-color: lightskyblue;
 }
 
 p
@@ -23,8 +23,8 @@ h4
 .home-banner
 {
     background-image: url("../images/home-banner.jpg");
-    background-color: aquamarine;
-    height: 500px;
+    /*background-color: aquamarine;*/
+    height: 700px;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -36,9 +36,7 @@ h4
     margin: 30px;
 }
 
-.page-header
+.page-content
 {
     background-color: lightgrey;
-    padding: 5px;
-    margin: 30px;
 }

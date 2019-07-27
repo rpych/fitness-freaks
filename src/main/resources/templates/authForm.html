@@ -7,19 +7,26 @@
     <link rel="stylesheet" th:href="@{/css/homePage.css}" type="text/css"/>
 </head>
 <body>
-<div class="row">
-    <div id="header">
-        <h3>
-            <span th:text="${banner}"></span>
-        </h3>
+
+<div class="container-fluid home-banner">
+    <div class="row">
+        <div class="col-md-12 align-items-center justify-content-center text-light" id="header">
+            <h3 class="text-center">
+               Witaj w Fitness Freaks!
+            </h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 align-items-center justify-content-center text-light">
+            <form action="#" th:action="@{/oauth2/authEmail}" th:object="${user}" method="post">
+                <div class="form-group align-items-center justify-content-center">
+                    <label for="age">Podaj nazwę swojego maila:</label>
+                    <input type="text" class="form-control" id="age" placeholder="Podaj email" th:field="*{email}">
+                </div>
+                <button type="submit" class="btn btn-success" >Zatwierdź</button>
+            </form>
+        </div>
     </div>
 </div>
-<form action="#" th:action="@{/oauth2/authEmail}" th:object="${user}" method="post">
-    <div class="form-group">
-        <label for="age">Podaj nazwę swojego maila:</label>
-        <input type="text" class="form-control" id="age" placeholder="Podaj email" th:field="*{email}">
-    </div>
-    <button type="submit" class="btn btn-success" >Zatwierdź</button>
-</form>
 </body>
 </html>

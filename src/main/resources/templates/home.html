@@ -1,43 +1,39 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Fitness-Freaks Home</title>
-   <!-- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> -->
+    <title>Fitness-Freaks</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-    <!-- <script th:src="@{/js/redirect.js}"></script> -->
     <link rel="stylesheet" th:href="@{/css/homePage.css}" type="text/css"/>
 </head>
 <body>
-
-<div class="container-fluid">
+<!--<header class="navbar navbar-fixed-top navbar-inverse">To jest header tej strony</header> -->
+<!-- <div class="page-header">
+    <small>To jest naglowek strony</small>
+</div> -->
+<!-- <div class="jumbotron text-center" style="margin-bottom:0;background-color:lightblue">
+    <h2>Witaj na stronie startowej aplikacji Fitness Freaks</h2>
+</div> -->
+<div class="container-fluid home-banner">
     <div class="row">
-        <div id="header">
-            <h3>
-                HEADER
-            </h3>
-        </div>
-    </div>
-    <div class="row">
-        <div id="logDiv">  <!--style="display:none;"-->
-            <!--<a href="#" th:href="@{/login}"  role="link" onclick="logIn()">Zaloguj się</a> -->
-            <div class="social-login">
-                <a class="btn btn-block social-btn google" role="button" th:href="@{/oauth2/authorize/google?redirect_uri=http://localhost:8080/oauth2/redirect}">
-                    <img th:src="@{../images/google-logo.png}" alt="Google" /> Log in with Google</a>
+        <div class="col-md-12 align-items-center justify-content-center text-light">
+            <div id="header">
+                <h3 class="text-center">
+                    Masz konto Google? Zaloguj się do Fitness Freaks używając konta Google
+                </h3>
             </div>
         </div>
     </div>
     <div class="row">
-        <div id="registerDiv">
-           <!-- <a href="#" th:href="@{/signup}" role="link" onclick="register()">Zarejestruj się</a> -->
-            <div className="social-signup">
-                <a className="btn btn-block social-btn google" role="button" th:href="@{/oauth2/authorize/google?redirect_uri=http://localhost:8080/oauth2/redirect}">
-                    <img th:src="@{../images/google-logo.png}" alt="Google" /> Sign up with Google</a>
+        <div class="col-md-12 align-items-center justify-content-center text-light">
+            <div id="logDiv">
+                <div class="social-login">
+                    <a class="btn btn-block social-btn google text-light" role="button" th:href="@{/oauth2/authorize/google?redirect_uri=http://localhost:8080/oauth2/redirect}">
+                        <img th:src="@{../images/google.png}" alt="Google" /> Log in with Google</a>
+                </div>
             </div>
         </div>
-
     </div>
 </div>
-
 </body>
 </html>

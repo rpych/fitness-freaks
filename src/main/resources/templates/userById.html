@@ -11,11 +11,14 @@
     <link rel="stylesheet" th:href="@{/css/homePage.css}" type="text/css"/>
 </head>
 <body>
-<div class="row">
-    <div class="page-header" id="pageHead"> <!-- style="background-color: lightgrey;" -->
-        <a href="#" th:href="@{'/oauth2/logInto/'+${userId}}" id="homeLink" role="link">HOME</a>
+<div class="card">
+    <div class="card-header">
+        <strong>
+            <a href="#" th:href="@{'/oauth2/logInto/'+${userId}}" id="homeLink1" role="link">Strona startowa</a>
+        </strong>
     </div>
 </div>
+
 <div class="row">
     <div class="col-4">
         <div class="list-group" id="myList" role="tablist">
