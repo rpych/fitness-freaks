@@ -189,13 +189,13 @@ public class UserController {
         return "logInto";
     }
 
-    @PostMapping(value = "/oauth2/getCustomizedExercises")
-    //@PreAuthorize("hasRole('USER')")
-    public /*ResponseEntity<?>*/ String getCustomizedExercises(@ModelAttribute User user, BindingResult result, Model model){
+    @PostMapping(value = "/oauth2/getCustomizedExercises/{userId}")
+    public /*ResponseEntity<?>*/ String getCustomizedExercises(@PathVariable("userId") Long id, @ModelAttribute User user, BindingResult result, Model model){
         if(result.hasErrors()){
             System.out.println("Error in binding in getCustomizedExercises");
             return "logInto";
         }
+        user.setId(id);
         model.addAttribute("user", user);
         System.out.println("User in getCustomizedExercises = " +  user.getId());
         Integer defaultNumOfDaysForTraining = 7;
@@ -244,7 +244,6 @@ public class UserController {
 
 
     @PostMapping("/oauth2/logDailyExercise/{userId}")
-    //@RequestMapping(value = "/logDailyExercise", method = RequestMethod.POST ) // MediaType.APPLICATION_FORM_URLENCODED_VALUE
     public String logDailyExercise(@PathVariable("userId") Long userId, @ModelAttribute LoggedExercise logExer, BindingResult result, Model model){
         logExer.setId(userId);
         userService.loggedDailyExercises.add(logExer);
@@ -271,12 +270,4 @@ public class UserController {
         model.addAttribute("loggedExercises", userService.loggedDailyExercises);
         return "submitDailyExercises";
     }
-
-    /*@GetMapping("/user/me")
-    @PreAuthorize("hasRole('USER')")
-    public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
-        return userRepository.findById(userPrincipal.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
-    }*/
-
 }
