@@ -17,7 +17,7 @@ public class ExercisesSolver {
     public final static Integer GOOD_SHAPE = 75;
 
     public ExercisesSolver() {
-        this.exerciseNames = Arrays.asList("Pompki", "Brzuszki", "Biceps", "Podciąganie na drążku", "Martwy ciąg");
+        this.exerciseNames = Arrays.asList("Pompki", "Brzuszki", "Biceps", "Podciaganie na drazku", "Martwy ciag");
         this.roundsUpperBoundPerExercise = new HashMap<>();
         this.repetitionsUpperBoundPerExercise = new HashMap<>();
         prepareExerciseSolver();
@@ -37,7 +37,7 @@ public class ExercisesSolver {
         repetitionsUpperBoundPerExercise.put("Martwy ciąg", 8);
     }
 
-    public DailyExercise getCustomExercise(String date, String exerName, Integer relShape){
+    public DailyExercise getCustomExercise(Long id, String date, String exerName, Integer relShape){
         int index;
         Integer maxRounds = roundsUpperBoundPerExercise.getOrDefault(exerName, 6);
         Integer maxRepetitions = repetitionsUpperBoundPerExercise.getOrDefault(exerName, 7);
@@ -61,7 +61,7 @@ public class ExercisesSolver {
             maxRounds /= index;
             maxRepetitions /= index;
         }
-        DailyExercise ex = new DailyExercise(date, exerName, maxRounds, maxRepetitions);
+        DailyExercise ex = new DailyExercise(id, date, exerName, maxRounds, maxRepetitions);
         return ex;
     }
 

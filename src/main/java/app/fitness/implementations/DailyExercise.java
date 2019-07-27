@@ -1,9 +1,11 @@
 package app.fitness.implementations;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
 
 @Entity
-public class DailyExercise { //maybe it swap class Exercise
+public class DailyExercise {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -14,8 +16,11 @@ public class DailyExercise { //maybe it swap class Exercise
     private String name;
     private Integer rounds;
     private Integer repetitionsInOneRound;
+    @ColumnDefault("False")
+    private boolean logged = false;
 
-    public DailyExercise(String date, String name, Integer rounds, Integer repetitionsInOneRound) {
+    public DailyExercise(Long id, String date, String name, Integer rounds, Integer repetitionsInOneRound) {
+        this.id = id;
         this.date = date;
         this.name = name;
         this.rounds = rounds;
@@ -71,5 +76,13 @@ public class DailyExercise { //maybe it swap class Exercise
 
     public void setRepetitionsInOneRound(Integer repetitionsInOneRound) {
         this.repetitionsInOneRound = repetitionsInOneRound;
+    }
+
+    public boolean isLogged() {
+        return logged;
+    }
+
+    public void setLogged(boolean logged) {
+        this.logged = logged;
     }
 }

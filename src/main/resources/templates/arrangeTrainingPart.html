@@ -3,8 +3,6 @@
 <head>
     <title>Fitness-Freaks user panel</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <!--<meta th:name="_csrf" th:content="${_csrf.token}"/>
-    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -39,17 +37,6 @@
                         <button type="submit" class="btn btn-success">Zatwierdź</button>
                     </form>
                 </div>
-                <!-- <div class="tab-pane" th:id="${idx.index}" th:unless="${idx.index} == 0"  role="tabpanel">
-                     <form action="#" th:action="@{/getCustomizedExercises}" method="post">
-                         <div class="form-row">
-                             <div class="form-group col-md-6">
-                                 <label for="allRepetitions">Age</label>
-                                 <input type="text" class="form-control" id="allRepetitions" th:placeholder="'/' + ${exercise.rounds * exercise.repetitionsInOneRound}" th:field="${loggedExercise.allRepetitions}">
-                             </div>
-                         </div>
-                         <button type="submit" class="btn btn-success">Zatwierdź</button>
-                     </form>
-                 </div> -->
             </th:block>
         </div>
     </div>

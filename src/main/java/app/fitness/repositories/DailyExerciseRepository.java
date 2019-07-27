@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface DailyExerciseRepository extends JpaRepository<DailyExercise, Long> {
-    List<DailyExercise> getDailyExercisesById(Long id);
+    List<DailyExercise> getDailyExercisesByIdAndLogged(Long id, boolean isLogged);
     DailyExercise findDailyExerciseByIdAndNameAndDate(Long id, String name, String date);
 }

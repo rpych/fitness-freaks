@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Qualifier("userService")
@@ -56,8 +57,21 @@ public class UserService {
         System.out.println("LoggedExercise already in database");
     }
 
-    public List<DailyExercise> getDailyExercisesByUserId(Long id){
-       return dailyExerciseRepository.getDailyExercisesById(id);
+    public void updateDailyExerciseIsLogged(LoggedExercise logEx){
+        DailyExercise dex = dailyExerciseRepository.findDailyExerciseByIdAndNameAndDate(logEx.getId(), logEx.getName(), logEx.getDate());
+        dex.setLogged(true);
+        dailyExerciseRepository.save(dex);
+    }
+
+    public void saveDailyExercises(Map<Integer, List<DailyExercise>> dailyExercises){
+        for(Map.Entry<Integer, List<DailyExercise> > e: dailyExercises.entrySet()){
+            dailyExerciseRepository.saveAll(e.getValue());
+        }
+
+    }
+
+    public List<DailyExercise> getDailyExercisesByUserId(Long id, boolean isLogged){
+       return dailyExerciseRepository.getDailyExercisesByIdAndLogged(id, isLogged);
     }
 
     public List<LoggedExercise> getLoggedExercisesByUserId(Long id){
@@ -76,7 +90,7 @@ public class UserService {
     public List<ExerciseComparison> getComparisonBetweenLoggedAndAssumedExercises(Long userId, int limit){
         List<ExerciseComparison> exerciseComparisons = new LinkedList<>();
         List<LoggedExercise> loggedExercises = getLoggedExercisesByUserId(userId);
-        List<DailyExercise>  assumedExercises = getDailyExercisesByUserId(userId);
+        List<DailyExercise>  assumedExercises = getDailyExercisesByUserId(userId, true);
         int counter = 0;
         for(DailyExercise dex: assumedExercises){
             if(counter++ > limit){ break; }
@@ -108,21 +122,25 @@ public class UserService {
            return user.orElseThrow(() -> new IllegalArgumentException("User with id = " + id + " does not exist"));
     }
 
-    public Map<Integer, List<DailyExercise> > prepareExercisesForGivenPeriodOfTime(Integer numOfDays, Integer relShape){
+    public Map<Integer, List<DailyExercise> > prepareExercisesForGivenPeriodOfTime(Integer numOfDays, Integer relShape, Long id){
        Map<Integer, List<DailyExercise> > exercisesForNumOfDays = new HashMap<>();
+        Calendar calendar = Calendar.getInstance();
         for(int i=0;i<numOfDays;++i){
-            List<DailyExercise> exersListForOneDay = prepareExercisesForOneDay(relShape);
+            calendar.add(Calendar.DAY_OF_YEAR, i);
+            String date = new SimpleDateFormat("MM-dd-yyyy").format(calendar.getTime());
+            System.out.println("Date = "+date);
+            List<DailyExercise> exersListForOneDay = prepareExercisesForOneDay(relShape, id, date);
             exercisesForNumOfDays.put(i, exersListForOneDay);
         }
         return exercisesForNumOfDays;
     }
 
-    public List<DailyExercise> prepareExercisesForOneDay(Integer relShape){
+    public List<DailyExercise> prepareExercisesForOneDay(Integer relShape, Long id, String date){
         List<DailyExercise> exercisesForOneDay = new LinkedList<>();
         Integer exersNum = exercisesSolver.getExerciseNames().size();
         for(int i=0;i<exersNum;++i){
             String exerName = exercisesSolver.getExerciseNames().get(i);
-            DailyExercise ex = exercisesSolver.getCustomExercise("Day"+i, exerName, relShape);
+            DailyExercise ex = exercisesSolver.getCustomExercise(id, date, exerName, relShape);
             exercisesForOneDay.add(ex);
         }
         return exercisesForOneDay;

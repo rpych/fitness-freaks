@@ -2,9 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Fitness-Freaks user panel</title>
-    <!-- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />-->
-    <!-- <meta th:name="_csrf" th:content="${_csrf.token}"/>
-    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -103,95 +100,5 @@
 
     </div>
 </div>
-
-
-<!-- <script>
-    $(document).ready(function () {
-
-        $("#firstButton").submit(function (event) {
-            //stop submit the form, we will post it manually.
-            event.preventDefault();
-            alert("This is my alert "+ elementName + " idx0 = "+ idx);
-
-            fire_ajax_submit('logButton', 0);
-
-        });
-
-        $("#secButton").submit(function (event) {
-
-            //stop submit the form, we will post it manually.
-            event.preventDefault();
-            alert("This is my alert "+ elementName + " idx = "+ idx);
-            fire_ajax_submit('logButton', 1);
-
-        });
-
-    });
-
-    function fire_ajax_submit(elementName, idx) {
-        //alert("This is my alert "+ elementName + " idx = "+ idx);
-        //event.preventDefault();
-        var search = {};
-        var logButtons = document.getElementsByName(elementName);
-        var logDates = document.getElementsByName("date");
-        var logNames = document.getElementsByName("name");
-        search["date"] = logDates[0].value();//$("#date")[0].val();
-        search["name"] = logNames[0].value(); //$("#name")[0].val();
-        var first;
-        var dailyExerId;
-        if(idx == 0){
-            dailyExerId = document.getElementById("allRepetitions");
-            search["allRepetitions"] = dailyExerId[0].value();//$("#allRepetitions")[0].val();//
-            //first = dailyExerId.val();
-        }
-        else{
-            dailyExerId = document.getElementById("allRepetitions1");
-            search["allRepetitions"] = dailyExerId[0].value();//$("#allRepetitions").val();//dailyExerId[0].val();
-            //first = dailyExerId.val();
-        }
-
-        var token = $("meta[name='_csrf']").attr("content");
-        var header = $("meta[name='_csrf_header']").attr("content");
-        $(document).ajaxSend(function(event, xhr, options) {
-            xhr.setRequestHeader(header, token);
-        });
-        $("#btn-search").prop("disabled", true);
-
-        $.ajax({
-            type: "POST",
-            contentType: "application/json",
-            url: "/logDailyExercise",
-            data: JSON.stringify(search),
-            //dataType: 'json',
-            cache: false
-            /*timeout: 600000,*/
-            /*success: function (data) {
-
-                var json = "<h4>Ajax Response</h4><pre>"
-                    + JSON.stringify(data, null, 4) + "</pre>";
-                $('#feedback').html(json);
-
-                console.log("SUCCESS : ", data);
-                $("#btn-search").prop("disabled", false);
-
-            },
-            error: function (e) {
-
-                var json = "<h4>Ajax Response</h4><pre>"
-                    + e.responseText + search["name"]+  search["date"]+ search["allRepetitions"]+"</pre>";
-                $('#feedback').html(json);
-
-                console.log("ERROR : ", e);
-                $("#btn-search").prop("disabled", false);
-
-            }*/
-        });
-
-    }
-
-    /*JSON.stringify({ date: '12-07-2019',
-        name: 'Pompeczki',
-        allRepetitions: first}),*/
-</script> -->
 </body>
 </html>
