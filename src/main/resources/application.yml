@@ -1,8 +1,8 @@
 spring:
     datasource:
-        url: jdbc:mysql://localhost:3306/fitness_freaks?useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC
-        username: fitness
-        password: contador
+        url: jdbc:mysql://db4free.net/fitness_db
+        username: fitness_freaks
+        password: Contador12
 
     jpa:
         show-sql: true
