@@ -1,8 +1,10 @@
 package app.fitness.controllers;
 
 import app.fitness.implementations.*;
+import app.fitness.payload.ApiResponse;
 import app.fitness.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -123,5 +125,12 @@ public class UserController {
         model.addAttribute("exercisesList", exercisesList);
         model.addAttribute("userId", userId);
         return "userById";
+    }
+
+    @DeleteMapping("/oauth2/deleteElement/{userId}/{exerId}")
+    public ResponseEntity<?> deleteUserExercise(@PathVariable("userId") Long userId, @PathVariable("exerId") Long exerId){
+        System.out.println("In deleteElement Userid = " + userId + ", exerId = "+ exerId);
+        userService.deleteUserExercise(exerId);
+        return ResponseEntity.ok(new ApiResponse(true, "Exercise deleted."));
     }
 }

@@ -16,7 +16,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-4">
+    <div class="col-3">
         <div class="list-group" id="myList" role="tablist">
             <tr th:each="exercise,i: ${exercisesList}">
                 <a class="list-group-item list-group-item-action active" data-toggle="list" th:href="'#'+${i.index}" th:if="${i.index} == 0" role="tab"><td th:text="'Dzień: ' + ${exercise.date} + ', '+ ${exercise.name}" /></a>
@@ -24,7 +24,7 @@
             </tr>
         </div>
     </div>
-    <div class="col-8">
+    <div class="col-6">
         <div class="tab-content">
             <div id="feedback"></div>
             <th:block th:each="exercise,i: ${exercisesList}">
@@ -89,16 +89,24 @@
             </th:block>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-md-4">
-        <a href="#" th:href="@{/oauth2/redirect/submitDailyExercises}" id="submitLog" class="btn btn-primary" role="button">Zatwierdź logowanie ćwiczeń</a>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="inputExercise">Wybierz ćwiczenie z listy, które chcesz usunąć</label>
+            <select id="inputExercise" class="form-control">
+                <th:block th:each="exercise,i: ${exercisesList}">
+                    <option selected th:value="${exercise.primaryId}" th:text="${exercise.date}+', '+${exercise.name}"></option>
+                </th:block>
+            </select>
+        </div>
+    <div>
+        <button id="deleteButton" type="button" name="deleteButton" class="btn btn-success" onclick="deleteExercise()">Usuń wybrany element</button>
+    </div>
+    <div class="row">
+        <div id="feedbackDiv">
+        </div>
+    </div>
     </div>
 </div>
-<div class="row">
-    <div id="feedbackDiv">
-
-    </div>
-</div>
+<script th:src="@{/js/arrangeTraining.js}"></script>
 </body>
 </html>

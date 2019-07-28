@@ -104,6 +104,12 @@ public class UserService {
         return exerciseComparisons;
     }
 
+    public DailyExercise deleteUserExercise(Long exerciseId){
+        DailyExercise dex = dailyExerciseRepository.findByPrimaryId(exerciseId);
+        dailyExerciseRepository.delete(dex);
+        return  dex;
+    }
+
     public void addUser(User user) {
         userRepository.save(user);
     }

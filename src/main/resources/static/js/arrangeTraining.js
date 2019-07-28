@@ -1,8 +1,10 @@
+
+const userId = document.getElementById("userId").value;
 const ACCESS_TOKEN = 'accessToken';
 const API_BASE_URL = '/oauth2';
+const CURRENT_VIEW_HREF = '/oauth2/arrangeTraining/' + userId;
 
 if(localStorage.getItem(ACCESS_TOKEN) === null){
-    console.log("ACCESS_TOKEN not valid in logInto.js");
     window.location.href = '/';
 }
 
@@ -24,18 +26,30 @@ const request = (options) => {
                 if(!response.ok) {
                     return Promise.reject(json);
                 }
-                console.log('Odpowiedz ' + json);
+                console.log(json);
+                setFeedback();
+                setTimeout(function(){
+                    window.location.href = CURRENT_VIEW_HREF;
+                }, 2000);
                 return json;
-            }).catch(error => {
-                console.log(error);
             })
         );
 };
 
+function setFeedback(){
+    var feedback = document.getElementById("feedbackDiv");
+    feedback.innerHTML = "<strong>Ćwiczenie zostało usunięte</strong>";
+    feedback.style.backgroundColor = "red";
+}
 
-function arrangeTraining(){
+function deleteExercise(){
+    var elementToDelete = document.getElementById("inputExercise");
+    var option = elementToDelete.options[elementToDelete.selectedIndex];
+    var indexToDelete = option.value;
+
+
     return request({
-        url: API_BASE_URL + '/arrangeTraining',
-        method: 'GET',
+        url: API_BASE_URL + '/deleteElement/' + userId + '/' + indexToDelete,
+        method: 'DELETE'
     });
 }

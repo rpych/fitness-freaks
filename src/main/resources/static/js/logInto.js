@@ -59,3 +59,4 @@ function arrangeTraining(){
         method: 'GET',
     });
 }
+
