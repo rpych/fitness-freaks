@@ -16,7 +16,7 @@
             <strong class="text-left">
                 <a href="#" th:href="@{'/oauth2/logInto/'+${user.id}}" id="homeLink1" role="link">Strona startowa</a>
             </strong>
-            <h6 class="text-right">Wyloguj się</h6>
+            <a href="#" th:href="@{/}" id="logoutLink" role="link" onclick="logout()" style="">Wyloguj się</a>
         </div>
     </div>
 </div>
@@ -116,52 +116,6 @@
 </div>
 <div id="feedback"></div>
 <script th:src="@{/js/logInto.js}"></script>
-<script>
-    $(document).ready(function () {
-
-        $("#arrangeForm").submit(function (event) {
-
-            event.preventDefault();
-
-            fire_ajax_submit();
-
-           var ajaxPostInfoDiv = document.getElementById("ajaxPostInfoDiv");
-           ajaxPostInfoDiv.innerHTML = "<strong>Dodałeś nowy plan ćwiczenia</strong>";
-           ajaxPostInfoDiv.style.backgroundColor = "ForestGreen";
-           $("#ajaxPostInfoDiv").fadeIn();
-           setTimeout(function(){
-               $("#ajaxPostInfoDiv").fadeOut();
-           }, 3000);
-
-        });
-
-    });
-
-    function fire_ajax_submit() {
-
-        const userId = document.getElementById("userId").value;
-        console.log("USERID = " + userId);
-        var search = {};
-        search["name"] = $("#name").val();
-        search["rounds"] = $("#rounds").val();
-        search["repetitionsInOneRound"] = $("#repetitionsInOneRound").val();
-        search["date"] = $("#date").val();
-        $("#btn-search").prop("disabled", true);
-
-        $.ajax({
-            type: "POST",
-            contentType: "application/json",
-            url: "/oauth2/arrangeTrainingPart/" + userId,
-            data: JSON.stringify(search),
-            dataType: 'json',
-            cache: false,
-            success: function () {
-                var json = "<h4>Ajax Response</h4><pre>";
-                $('#feedback').html('<h4>Ajax Response</h4><pre>');
-            }
-        });
-    }
-</script>
 <script>
     jQuery(function(){
         jQuery('.datepicker').datepicker({

@@ -6,16 +6,18 @@ body
 
 p
 {
-    color: red;
-    border: 1px solid palevioletred;
+    color: darkgreen;
+    text-align: center;
+    border: 1px solid darkblue;
     padding: 40px;
     margin: 30px;
 }
 
 h4
 {
-    color: crimson;
-    border: 1px solid palevioletred;
+    color: darkgreen;
+    text-align: center;
+    border: 1px solid olivedrab;
     padding: 5px;
     margin: 30px;
 }
