@@ -6,6 +6,7 @@ import javax.persistence.*;
 public class BodyParameters {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Integer age;
     private Double weight;

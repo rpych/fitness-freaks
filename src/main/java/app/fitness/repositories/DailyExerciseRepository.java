@@ -10,4 +10,5 @@ import java.util.List;
 public interface DailyExerciseRepository extends JpaRepository<DailyExercise, Long> {
     List<DailyExercise> getDailyExercisesByIdAndLogged(Long id, boolean isLogged);
     DailyExercise findDailyExerciseByIdAndNameAndDate(Long id, String name, String date);
+    DailyExercise findByPrimaryId(Long id);
 }
