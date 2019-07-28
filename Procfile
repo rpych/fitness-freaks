@@ -1,0 +1,1 @@
+web: /home/andrzej/jdk1.8.0_181//bin/java -jar target/fitness-freaks-0.0.1-SNAPSHOT.jar
