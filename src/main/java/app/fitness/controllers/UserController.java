@@ -80,7 +80,9 @@ public class UserController {
     public String arrangeTrainingPart(@PathVariable("id") Long id, @RequestBody DailyExercise exer, BindingResult result, Model model){
         System.out.println("Exercise successfully posted with exer date = " + exer.getDate() + "  exer name = "+ exer.getName() + " exer rounds = "+exer.getRounds());
         userService.dailyExercises.add(exer);
-        userService.saveDailyExerciseByUserId(id, exer);
+        if(!userService.saveDailyExerciseByUserId(id, exer)){
+            return "exerciseInUse";
+        }
         return "arrangeTrainingPart";
     }
 
@@ -108,7 +110,9 @@ public class UserController {
     public String logDailyExercise(@PathVariable("userId") Long userId, @ModelAttribute LoggedExercise logExer, BindingResult result, Model model){
         logExer.setId(userId);
         userService.loggedDailyExercises.add(logExer);
-        userService.saveLoggedExerciseByUserId(userId, logExer);
+        if(!userService.saveLoggedExerciseByUserId(userId, logExer)){
+            return "exerciseInUse";
+        }
         userService.updateDailyExerciseIsLogged(logExer);
         model.addAttribute("logExer", logExer);
         System.out.println("Logged exercise with exer date = " + logExer.getDate() + "  exer name = "+ logExer.getName() + " exer rounds = "+logExer.getAllRepetitions());

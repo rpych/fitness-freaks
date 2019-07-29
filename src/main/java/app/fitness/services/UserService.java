@@ -34,33 +34,41 @@ public class UserService {
     public UserService() {
     }
 
-    public void saveDailyExerciseByUserId(Long id, DailyExercise dailyExercise){
+    public boolean saveDailyExerciseByUserId(Long id, DailyExercise dailyExercise){
         dailyExercise.setId(id);
-        DailyExercise res = dailyExerciseRepository.findDailyExerciseByIdAndNameAndDate(dailyExercise.getId(),
+        List<DailyExercise> res = dailyExerciseRepository.findDailyExerciseByIdAndNameAndDate(dailyExercise.getId(),
                 dailyExercise.getName(), dailyExercise.getDate());
-        if(res == null){
+        if(res.size() == 0){
             dailyExerciseRepository.save(dailyExercise);
-            return;
+            return true;
         }
         System.out.println("DailyExercise already in database");
-
+        return false;
     }
 
-    public void saveLoggedExerciseByUserId(Long id, LoggedExercise loggedExercise){
+    public boolean saveLoggedExerciseByUserId(Long id, LoggedExercise loggedExercise){
         loggedExercise.setId(id);
         LoggedExercise res = loggedExerciseRepository.findLoggedExerciseByIdAndNameAndDate(loggedExercise.getId(),
                 loggedExercise.getName(), loggedExercise.getDate());
         if(res == null){
             loggedExerciseRepository.save(loggedExercise);
-            return;
+            return true;
         }
         System.out.println("LoggedExercise already in database");
+        return false;
     }
 
     public void updateDailyExerciseIsLogged(LoggedExercise logEx){
-        DailyExercise dex = dailyExerciseRepository.findDailyExerciseByIdAndNameAndDate(logEx.getId(), logEx.getName(), logEx.getDate());
+        List<DailyExercise> dexList = dailyExerciseRepository.findDailyExerciseByIdAndNameAndDate(logEx.getId(), logEx.getName(), logEx.getDate());
+        DailyExercise dex = dexList.get(0);
         dex.setLogged(true);
         dailyExerciseRepository.save(dex);
+        if(dexList.size() > 1){
+            for(int i=1;i<dexList.size();i++){
+                DailyExercise d = dexList.get(i);
+                dailyExerciseRepository.delete(d);
+            }
+        }
     }
 
     public void saveDailyExercises(Map<Integer, List<DailyExercise>> dailyExercises){
