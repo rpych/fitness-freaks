@@ -5,6 +5,16 @@
     <title>Fitness-Freaks</title>
 </head>
 <body>
+<div class="card">
+    <div class="card-header">
+        <div class="col-md">
+            <strong class="text-left">
+                <a href="#" th:href="@{'/oauth2/logInto/'+${userId}}" id="homeLink1" role="link">Strona startowa</a>
+            </strong>
+            <a href="#" th:href="@{/}" id="logoutLink" role="link" onclick="logout()" style="">Wyloguj się</a>
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-6">
         <h1>Ćwiczenie istnieje już w Twoim koncie użytkownika</h1>
