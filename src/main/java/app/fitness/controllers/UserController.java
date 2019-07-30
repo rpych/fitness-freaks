@@ -42,9 +42,8 @@ public class UserController {
         Long id = new Long(-1);
         if(userRepository.findById(userId).isPresent())
             userId = userRepository.findById(userId).get().getId();
-        System.out.println("User  "+ "," + "userId = " + userId);
         User user = new User();
-        user.setId(userId); //!!!!!!!!!!!!
+        user.setId(userId); //!!!
         model.addAttribute("user", user);
         DailyExercise dexer = new DailyExercise();
         model.addAttribute("dailyExer", dexer);
@@ -59,18 +58,11 @@ public class UserController {
         }
         user.setId(id);
         model.addAttribute("user", user);
-        System.out.println("User in getCustomizedExercises = " +  user.getId());
         Integer defaultNumOfDaysForTraining = 7;
         Integer relShape = user.getBodyParameters().getRelativeShape();
-        System.out.println("RelShape = " + relShape);
         Map<Integer, List<DailyExercise>> exercisesForNumOfDays = userService.prepareExercisesForGivenPeriodOfTime(defaultNumOfDaysForTraining,
                 relShape, id);
         userService.saveDailyExercises(exercisesForNumOfDays);
-        System.out.println("Size = " + exercisesForNumOfDays.size());
-        for(Map.Entry<Integer, List<DailyExercise> > e: exercisesForNumOfDays.entrySet()){
-            for(DailyExercise ex: e.getValue())
-                System.out.println("Key = " + e.getKey() + ", Values = " + ex.getName() + ", id = "+ex.getId());
-        }
 
         model.addAttribute("exercisesMap", exercisesForNumOfDays);
         return "getCustomizedExercises";
@@ -78,12 +70,8 @@ public class UserController {
 
     @RequestMapping(value = "/oauth2/arrangeTrainingPart/{id}", method = RequestMethod.POST)
     public String arrangeTrainingPart(@PathVariable("id") Long id, @RequestBody DailyExercise exer, BindingResult result, Model model){
-        System.out.println("Exercise successfully posted with exer date = " + exer.getDate() + "  exer name = "+ exer.getName() + " exer rounds = "+exer.getRounds());
         userService.dailyExercises.add(exer);
         userService.saveDailyExerciseByUserId(id, exer);
-        /*if(!userService.saveDailyExerciseByUserId(id, exer)){
-            return "exerciseInUse";
-        }*/
         return "arrangeTrainingPart";
     }
 
@@ -92,17 +80,12 @@ public class UserController {
         Long id = new Long(-1);
         if(userRepository.findById(userId).isPresent())
             userId = userRepository.findById(userId).get().getId();
-        System.out.println("UserId in arrangeTraining = "+ userId);
         User user = new User();
-        user.setId(userId); //!!!!!!!!!!!!
+        user.setId(userId); //!!!
         model.addAttribute("user", user);
-        //System.out.println("UserPrincipal = " + userPrincipal.getId() + ", " + userPrincipal.getName());
         List<DailyExercise> dailyExercises = userService.getDailyExercisesByUserId(userId, false); //isLogged = false
         model.addAttribute("exercisesList", dailyExercises);
         LoggedExercise logEx = new LoggedExercise();
-        for(DailyExercise ex: dailyExercises){
-            System.out.println(ex.getDate() + " ," + ex.getName());
-        }
         model.addAttribute("loggedExercise", logEx);
         return "arrangeTraining";
     }
@@ -117,17 +100,13 @@ public class UserController {
         }
         userService.updateDailyExerciseIsLogged(logExer);
         model.addAttribute("logExer", logExer);
-        System.out.println("Logged exercise with exer date = " + logExer.getDate() + "  exer name = "+ logExer.getName() + " exer rounds = "+logExer.getAllRepetitions());
         return "logDailyExercise";
     }
 
     @GetMapping("/oauth2/getUserExercises/{userId}")
     public String getUserExercises(@PathVariable("userId") Long userId, Model model){
-        int limit = 5;
+        int limit = 10;
         List<ExerciseComparison> exercisesList = userService.getComparisonBetweenLoggedAndAssumedExercises(userId, limit);
-        for(ExerciseComparison ex: exercisesList){
-            System.out.println("Exercise in getUserExercise = " + ex.getName() + ", " + ex.getDate() + ", "+ ex.getAssumedRepetitions() + ", " + ex.getLoggedRepetitions());
-        }
         model.addAttribute("exercisesList", exercisesList);
         model.addAttribute("userId", userId);
         return "userById";
@@ -135,7 +114,6 @@ public class UserController {
 
     @DeleteMapping("/oauth2/deleteElement/{userId}/{exerId}")
     public ResponseEntity<?> deleteUserExercise(@PathVariable("userId") Long userId, @PathVariable("exerId") Long exerId){
-        System.out.println("In deleteElement Userid = " + userId + ", exerId = "+ exerId);
         userService.deleteUserExercise(exerId);
         return ResponseEntity.ok(new ApiResponse(true, "Exercise deleted."));
     }

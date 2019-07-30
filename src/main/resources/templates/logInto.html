@@ -39,7 +39,9 @@
 
         <div class="tab-content">
             <div class="tab-pane active" id="advance" role="tabpanel" aria-labelledby="advance-tab">
-                <h3>Twoje wyniki </h3>
+                <div>
+                    <h3 class="align-items-center justify-content-center">Twoje wyniki </h3>
+                </div>
                 <a href="#" th:href="@{'/oauth2/getUserExercises/'+${user.id}}" id="homeLink" role="link" >Porównaj wykonany plan ćwiczeń z zakładanym przez Ciebie planem</a>
             </div>
             <div class="tab-pane" id="plan-training" role="tabpanel" aria-labelledby="plan-training-tab">
@@ -101,11 +103,11 @@
             </div>
             <div class="tab-pane" id="help" role="tabpanel" aria-labelledby="help-tab">
                 <p>Korzystając z serwisu fitness-freaks możesz:<br>
-                    * zaplanować swój trening wybierajac zakładkę "Zaplanuj trening",<br>
-                      gdzie dla danej daty wpisujesz dowolne ćwiczenie i określasz dla niego ilość serii<br>
-                      i powtórzeń w serii<br><br>
+                    * zaplanować swój trening wybierajac zakładkę "Zaplanuj trening",
+                      gdzie dla danej daty wpisujesz dowolne ćwiczenie i określasz dla niego ilość serii
+                      i powtórzeń w serii<br>
 
-                    * zlecić zaplanowanie treningu systemowi wybierając zakładkę "Instruktor FREAK"<br><br>
+                    * zlecić zaplanowanie treningu systemowi wybierając zakładkę "Instruktor FREAK"<br>
 
                     * zobaczyć postępy własnego treningu w zakładce "Postępy treningu"</p>
             </div>

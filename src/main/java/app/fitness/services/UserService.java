@@ -118,16 +118,6 @@ public class UserService {
         return  dex;
     }
 
-    public void addUser(User user) {
-        userRepository.save(user);
-    }
-
-    public User removeUser(Long id) {
-       User user = getUser(id);
-       userRepository.delete(user);
-       return user;
-    }
-
     public User getUser(Long id){
         Optional<User> user = userRepository.findById(id);
         if(user.isPresent())
