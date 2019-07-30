@@ -129,8 +129,9 @@ public class UserService {
     public Map<Integer, List<DailyExercise> > prepareExercisesForGivenPeriodOfTime(Integer numOfDays, Integer relShape, Long id){
        Map<Integer, List<DailyExercise> > exercisesForNumOfDays = new HashMap<>();
         Calendar calendar = Calendar.getInstance();
+        Date today = calendar.getTime();
         for(int i=0;i<numOfDays;++i){
-            calendar.add(Calendar.DAY_OF_YEAR, i);
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
             String date = new SimpleDateFormat("MM-dd-yyyy").format(calendar.getTime());
             System.out.println("Date = "+date);
             List<DailyExercise> exersListForOneDay = prepareExercisesForOneDay(relShape, id, date);
