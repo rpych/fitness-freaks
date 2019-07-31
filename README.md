@@ -5,8 +5,6 @@ Dockerhub repository:
 https://hub.docker.com/r/andrzej97/fitness-freaks-docker
 
 To run by docker:
-- pull the image from docekr hub:
-    docker pull andrzej97/fitness-freaks-docker
-- run the docker conainer:
-    docker run -p 5000:8080 andrzej97/fitness-freaks-docker
-Application should be available at: http://localhost:5000/
+- pull the image from docekr hub and run it:
+    (sudo) docker run -p 8080:8080 andrzej97/fitness-freaks-docker:0.0.2-SNAPSHOT
+Application should be available at: http://localhost:8080/
